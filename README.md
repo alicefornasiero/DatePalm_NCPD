@@ -1,2 +1,2 @@
 # Date Palm Saudi Arabia
-Characterization of a date palm (Phoenix dactylifera) collection from the Al Ahsa National Park, Saudi Arabia.
+Characterization of a collection of date palm (Phoenix dactylifera) samples from the National Center for Palms and Dates (NCPD), Al-Ahsa, KSA.
