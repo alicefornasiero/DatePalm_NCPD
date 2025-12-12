@@ -1,0 +1,46 @@
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=32
+#SBATCH --partition=batch
+#SBATCH --job-name align
+#SBATCH -o align.%J.out
+#SBATCH -e align.%J.err
+#SBATCH --time=48:00:00
+#SBATCH --mem=150G
+
+# Read aligment using BWA mem
+
+# ----------------------------------------------------------------------- #
+# FASTQ_FOLDER is the path to the folder containing the raw fastq files and the sample list
+# PROJECT_FOLDER is the path to the project folder
+# REFERENCE is the path to the reference genome in fasta format
+# MEM_THREADS is the number of threads
+
+FASTQ_FOLDER="ENTER_INPUT_DIRECTORY_PATH"
+PROJECT_FOLDER="ENTER_OUTPUT_DIRECTORY_PATH"
+REFERENCE="ENTER_REFERENCE_PATH_AND_FILE_NAME"
+MEM_THREADS=32
+# ----------------------------------------------------------------------- #
+
+# Create output directory and sub-directories
+ALIGN_DIR="${PROJECT_FOLDER}/03_alignment"
+mkdir -p ${ALIGN_DIR}
+mkdir -p ${ALIGN_DIR}/tmp
+mkdir -p ${ALIGN_DIR}/aln_stats
+
+# Change directory to alignment directory
+cd ${ALIGN_DIR}
+
+# Load modules
+module purge
+module load bwa/0.7.17/gnu-12.2.0
+module load samtools/1.16.1
+
+# Generate the array of slurms
+IFS=$'\n' read -d '' -r -a lines < ${FASTQ_FOLDER}/sample_id_list.txt
+ID=${lines[${SLURM_ARRAY_TASK_ID}]}
+
+# Run BWA mem
+bwa mem -M -t ${MEM_THREADS} \
+${REFERENCE} \
+${PROJECT_FOLDER}/01_trim/${ID}_clean_1.fq.gz ${PROJECT_FOLDER}/01_trim/${ID}_clean_2.fq.gz | samtools sort -O bam -T tmp -@ ${MEM_THREADS} - > ${ID}.bam
