@@ -8,9 +8,12 @@
 #SBATCH --time=20:00:00
 #SBATCH --mem=20G
 
-# Masking adapters using Cutadapt
+# Adapter masking using Cutadapt
 
+# ----------------------------------------------------------------------- #
 # Make sure you update input and output folder path
+# INFOLDER is the path to the folder containing the raw fastq files
+# OUTFOLDER is the path to the output folder
 INFOLDER="ENTER_INPUT_DIRECTORY_NAME_AND_PATH"
 OUTFOLDER="ENTER_OUTPUT_DIRECTORY_NAME AND_PATH"
 
@@ -18,29 +21,32 @@ OUTFOLDER="ENTER_OUTPUT_DIRECTORY_NAME AND_PATH"
 adapter1=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA
 adapter2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
 n_cores=32
+# ----------------------------------------------------------------------- #
+
+# Generate a list of sample IDs using the names of the fastq.gz files in the initial data directory
+cd ${INFOLDER}
+if [ -f "sample_list.txt" ]; then
+    rm sample_list.txt
+fi
+for fastq_file in *_R1.fastq.gz; do
+        sample_id=$(basename "$fastq_file" _R1.fastq.gz);
+done >> sample_id_list.txt
 
 # Create output directory and subdirectories
 TRIM_DIR="${OUTFOLDER}/01_trim"
 LOG_DIR="${OUTFOLDER}/01_trim/logs"
 mkdir -p ${TRIM_DIR}
 mkdir -p ${LOG_DIR}
+
+# Change directory to trimming directory
 cd $TRIM_DIR
 
 # Load modules
 module purge
 module load cutadapt/4.3
 
-# Generate a list of sample IDs using the names of the fastq.gz files in the initial data directory
-if [ -f "sample_list.txt" ]; then
-    rm sample_list.txt
-fi
-
-for fastq_file in ${INFOLDER}/*_R1.fastq.gz; do
-        sample_id=$(basename "$fastq_file" _R1.fastq.gz);
-done >> sample_id_list.txt
-
 # Generate the array of slurms
-IFS=$'\n' read -d '' -r -a lines < sample_id_list.txt
+IFS=$'\n' read -d '' -r -a lines < ${INFOLDER}/sample_id_list.txt
 ID=${lines[${SLURM_ARRAY_TASK_ID}]}
 
 # Launch cutadapt
