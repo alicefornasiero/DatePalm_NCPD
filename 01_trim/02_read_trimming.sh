@@ -27,7 +27,7 @@ module purge
 module load trimmomatic/0.39
 
 # Generate the array of slurms
-IFS=$'\n' read -d '' -r -a lines < ${FASTQ_FOLDER}/samples_list
+IFS=$'\n' read -d '' -r -a lines < ${FASTQ_FOLDER}/sample_id_list.txt
 ID=${lines[${SLURM_ARRAY_TASK_ID}]}
 
 # TRAILING Remove trailing low quality or N bases (Cut bases off the end of a read, if below quality 3)
