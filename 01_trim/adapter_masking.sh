@@ -3,8 +3,8 @@
 #SBATCH --cpus-per-task=32
 #SBATCH --partition=batch
 #SBATCH --job-name cutadap
-#SBATCH -o logs/cutadap.%J.out
-#SBATCH -e logs/cutadap.%J.err
+#SBATCH -o cutadap.%J.out
+#SBATCH -e cutadap.%J.err
 #SBATCH --time=20:00:00
 #SBATCH --mem=20G
 
@@ -34,7 +34,9 @@ done >> sample_id_list.txt
 
 # Create output directory and subdirectories
 TRIM_DIR="${PROJECT_FOLDER}/01_trim"
+LOG_DIR="${PROJECT_FOLDER}/01_trim/logs"
 mkdir -p ${TRIM_DIR}
+mkdir -p ${LOG_DIR}
 
 # Change directory to trimming directory
 cd $TRIM_DIR
