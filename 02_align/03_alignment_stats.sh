@@ -8,7 +8,7 @@
 #SBATCH --time=20:00:00
 #SBATCH --mem=100G
 
-# Alignement statistics
+# Generate alignement statistics
 
 # ----------------------------------------------------------------------- #
 # FASTQ_FOLDER is the path to the folder containing the raw fastq files and the sample list
