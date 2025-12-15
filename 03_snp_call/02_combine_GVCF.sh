@@ -24,13 +24,14 @@ VCF_PREFIX="ENTER_VCF_PREFIX_NAME"
 module purge
 module load gatk/4.3.0.0
 
-# Change to snp call output directory
+# Create tmp subdirectory and change directory to snp call output directory
+mkdir -p ${PROJECT_FOLDER}/04_snpcall/tmp
 cd ${PROJECT_FOLDER}/04_snpcall
 
 # Generate the list of samples to be included when running CombineGVCF
 for file in $(ls gVCF/*.g.vcf.gz); do SAMPLE_LIST+="--variant ${file} "; done
 
-# run CombineGVCFs
+# Run CombineGVCFs
 gatk --java-options "-Djava.io.tmpdir=tmp -Xmx120G" CombineGVCFs \
 -R ${REFERENCE} \
 -O ${VCF_PREFIX}.g.vcf.gz \
