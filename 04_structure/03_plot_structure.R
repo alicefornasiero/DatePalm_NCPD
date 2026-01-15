@@ -7,7 +7,7 @@
 #--------------------------------------------------------------------------------------#
 
 # Install required packages
-# install.packages(c("dplyr", "ggplot2", "RColorBrewer"))
+# install.packages(c("RColorBrewer"))
 
 # Load required libraries
 library(RColorBrewer)
@@ -32,26 +32,24 @@ outfile <- paste(dirname(infile), gsub(".txt", ".pdf", basename(infile)), sep="/
 pdf(outfile, width = 7, height = 7)
 
 # Plot!
+# Plot line
 plot(datatoplot$K, datatoplot$Cross_Entropy, 
-     type = "lines", 
-     lwd = 2, 
-     col = "blue", 
-     axes = FALSE, 
-     ann = FALSE)
+     type = "lines", lwd = 2, col = "blue", axes = FALSE, ann = FALSE
+    )
+# Plot data points
 points(datatoplot$K, datatoplot$Cross_Entropy,
-       pch = 20, 
-       cex = 1.5, 
-       col = "blue")
-title(xlab = "K, number of ancestral populations", 
-      ylab = "Min Cross-Entropy", 
-      cex.lab = 1.5)
-axis(side = 1, 
-     at = seq(1, num_k, by = 1), 
-     labels = TRUE, 
-     cex.axis = 1.2)
-axis(side = 2, 
-     at = seq(round(min(datatoplot$Cross_Entropy)-0.1, 2), round(max(datatoplot$Cross_Entropy)+0.1, 2), by = 0.01), 
-     cex.axis = 1.2)
+       pch = 20, cex = 1.5, col = "blue"
+      )
+# Add x and y labels
+title(xlab = "K, number of ancestral populations", ylab = "Min Cross-Entropy", cex.lab = 1.5
+     )
+# Plot x-axis
+axis(side = 1, at = seq(1, num_k, by = 1), labels = TRUE, cex.axis = 1.2
+    )
+# Plot y-axis
+axis(side = 2, cex.axis = 1.2,
+     at = seq(round(min(datatoplot$Cross_Entropy)-0.1, 2), round(max(datatoplot$Cross_Entropy)+0.1, 2), by = 0.01)
+    )
 # Close device
 dev.off()
 
@@ -65,9 +63,9 @@ indir = "/path/to/input/directory/with/Q/matrices"
 prefix = "output_file_prefix"
 namefile = "original_sample_order_in_sNMF_analysis"
 orderfile = "new_sample_order_to_plot"
-num_run = 0
-min_k = 2
-num_k = 4
+num_run = 0 # The run number to be plotted
+min_k = 2 # The minimum K to plot
+num_k = 4 # The maximum K to plot
 
 # Read input files
 samplenames <- read.table(namefile, header = FALSE, stringsAsFactors = FALSE)
@@ -110,7 +108,7 @@ for (aaa in 2 : num_k)
     # draw a black line between bars
     # abline(v = seq(1, length(sampleorder)), lwd = 0.5)
     mtext(paste0("K = ", aaa), side = 4, line = -2, adj = 0.5, cex = 2, col = "#505050", outer = FALSE, padj = 0)
-    # y axis tick marks
+    # y-axis tick marks
     axis(2, at = c(0, 0.2, 0.4, 0.6, 0.8, 1.0), line = -4, cex.axis = 2, las = 2)
     
     if (aaa == min_k) {
