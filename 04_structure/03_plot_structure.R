@@ -1,0 +1,118 @@
+#!/usr/bin/env Rscript
+#--------------------------------------------------------------------------------------#
+#                                                                                      #
+#         Plot the cross-entropy criterion to infer the best estimate of K.            #
+# The lower the cross-entropy, the better the model accounts for population structure. #
+#                                                                                      #
+#--------------------------------------------------------------------------------------#
+
+# Install required packages
+# install.packages(c("dplyr", "ggplot2", "RColorBrewer"))
+
+# Load required libraries
+library(RColorBrewer)
+
+#-----------------------------------#
+# 1. K-plot of Cross Entropy values #
+#-----------------------------------#
+
+infile = "/ibex/scratch/projects/c2042/celiim/DatePalm_population_genetics/06_structure/Females/sNMF/noclones/K_vs_CrossEntropy.txt"
+num_k = 10
+
+# Read input files
+mydata <- read.table(infile, header = TRUE, stringsAsFactors = FALSE)
+# Order data by increasing K number
+mydata <- mydata[order(mydata$K), ]
+# Only plot num_k Ks
+datatoplot <- mydata[1 : num_k,]
+# Define output file name
+outfile <- paste(dirname(infile), gsub(".txt", ".pdf", basename(infile)), sep="/")
+# Open pdf file for plotting
+pdf(outfile, width = 7, height = 7)
+
+# Plot!
+plot(datatoplot$K, datatoplot$Cross_Entropy, 
+     type = "lines", 
+     lwd = 2, 
+     col = "blue", 
+     axes = FALSE, 
+     ann = FALSE)
+points(datatoplot$K, datatoplot$Cross_Entropy,
+       pch = 20, 
+       cex = 1.5, 
+       col = "blue")
+title(xlab = "K, number of ancestral populations", 
+      ylab = "Min Cross-Entropy", 
+      cex.lab = 1.5)
+axis(side = 1, 
+     at = seq(1, num_k, by = 1), 
+     labels = TRUE, 
+     cex.axis = 1.2)
+axis(side = 2, 
+        at = seq(round(min(datatoplot$Cross_Entropy)-0.1, 2), round(max(datatoplot$Cross_Entropy)+0.1, 2), by = 0.01), 
+        cex.axis = 1.2)
+# Close device
+dev.off()
+
+
+#------------------------------------#
+# 2. Barplot of population structure #
+#------------------------------------#
+
+indir = "/ibex/scratch/projects/c2042/celiim/DatePalm_population_genetics/06_structure/Females/sNMF/noclones"
+prefix = "noclones_noprivall_snpsubset"
+namefile = "/ibex/scratch/projects/c2042/celiim/DatePalm_population_genetics/06_structure/Females/snp_pruning/Females_tokeep_sample_list.args"
+orderfile = "/ibex/project/c2042/celiim/DatePalm_population_genetics/06_structure/Females/sNMF/sNMF_Females_groups.txt"
+num_run = 0
+min_k = 2
+num_k = 4
+
+# Read input files
+samplenames <- read.table(namefile, header = FALSE, stringsAsFactors = FALSE)
+sampleorder <- read.table(orderfile, col.names = c("ind", "pop"), stringsAsFactors = FALSE)
+outbarplot <- paste0(indir, "/", prefix, "_run", num_run, "_I.", num_k, "_barplot.pdf")
+
+# 1. Open input files from structure analysis, given the number of Ks
+KdataFiles <- lapply(min_k : num_k,  function(x) read.table(paste0(indir, "/", prefix, "_run", num_run, "_I.", x, ".Q")))
+
+# 2. Add sample names (original ordering from structure analysis)
+Kdata <- lapply(KdataFiles, function(x) { x$samples <- unlist(samplenames); return(x) } )
+
+# 3. Order according to user's sample ordering
+Kdata_ord <- lapply(1 : length(Kdata), function(x) { Kdata[[x]] [match(unlist(sampleorder$ind), Kdata[[x]]$samples) , ] })
+# transpose Kdata_ord
+Kdata_t <- lapply(Kdata_ord, t)
+
+# 4. Prepare the plot
+# set colors
+cols <- brewer.pal(8, "Set2")
+cols <- cols[seq(2,(num_k + 1), 1)]
+# prepare spaces to separate the populations/species
+rep <- sampleorder %>% count(pop)
+spaces <- 0
+for(i in 1 : length(rep$n)){spaces = c(spaces, rep(0, rep$n[i]-1), 0.5)}
+spaces <- spaces[-length(spaces)]
+
+# 5. Plot!
+pdf(outbarplot, height = (num_k * 2), width = 18)
+if (num_k == min_k) par(mar = c(7,2,2,2))
+if (num_k > min_k) par(mfcol = c((num_k - 1),1), mar = c(0,3,0,2), oma = c(2,0,15,0))
+
+for (aaa in 2 : num_k)
+{
+    if (aaa == 2) Kcolor <- cols[1 : aaa] else Kcolor <- append(Kcolor, cols[aaa])
+    
+    bp <- barplot(Kdata_t[[aaa-1]][1 : aaa,], names.arg = Kdata_t[[aaa-1]][nrow(Kdata_t[[aaa-1]]),], 
+        axisnames = FALSE, col = Kcolor, border = NA, space = spaces, axes = FALSE, ylim = c(0, 1))
+    # abline(v = seq(1, length(sampleorder)), lwd = 0.5) # draw a black line between bars
+    mtext(paste0("K = ", aaa), side = 4, line = -2, adj = 0.5, cex = 2, col = "#505050", outer = FALSE, padj = 0)
+    # y axis tick marks
+    axis(2, at = c(0, 0.2, 0.4, 0.6, 0.8), line = -4, cex.axis = 2, las = 2)
+    
+    if (aaa == min_k) {
+    # sample name labels are plotted at the top of the barplot
+    mtext(text = Kdata_t[[aaa-1]][nrow(Kdata_t[[aaa-1]]),], at = bp, 
+    side = 3, cex = 0.8, las = 2, col = "#505050", line = 1)
+    }
+}
+dev.off()
