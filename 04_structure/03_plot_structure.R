@@ -16,7 +16,8 @@ library(RColorBrewer)
 # 1. K-plot of Cross Entropy values #
 #-----------------------------------#
 
-infile = "/ibex/scratch/projects/c2042/celiim/DatePalm_population_genetics/06_structure/Females/sNMF/noclones/K_vs_CrossEntropy.txt"
+# Input files and variables
+infile = "K_vs_CrossEntropy.txt"
 num_k = 10
 
 # Read input files
@@ -49,8 +50,8 @@ axis(side = 1,
      labels = TRUE, 
      cex.axis = 1.2)
 axis(side = 2, 
-        at = seq(round(min(datatoplot$Cross_Entropy)-0.1, 2), round(max(datatoplot$Cross_Entropy)+0.1, 2), by = 0.01), 
-        cex.axis = 1.2)
+     at = seq(round(min(datatoplot$Cross_Entropy)-0.1, 2), round(max(datatoplot$Cross_Entropy)+0.1, 2), by = 0.01), 
+     cex.axis = 1.2)
 # Close device
 dev.off()
 
@@ -59,10 +60,11 @@ dev.off()
 # 2. Barplot of population structure #
 #------------------------------------#
 
-indir = "/ibex/scratch/projects/c2042/celiim/DatePalm_population_genetics/06_structure/Females/sNMF/noclones"
-prefix = "noclones_noprivall_snpsubset"
-namefile = "/ibex/scratch/projects/c2042/celiim/DatePalm_population_genetics/06_structure/Females/snp_pruning/Females_tokeep_sample_list.args"
-orderfile = "/ibex/project/c2042/celiim/DatePalm_population_genetics/06_structure/Females/sNMF/sNMF_Females_groups.txt"
+# Input files and variables
+indir = "/path/to/input/directory/with/Q/matrices"
+prefix = "output_file_prefix"
+namefile = "original_sample_order_in_sNMF_analysis"
+orderfile = "new_sample_order_to_plot"
 num_run = 0
 min_k = 2
 num_k = 4
@@ -87,7 +89,7 @@ Kdata_t <- lapply(Kdata_ord, t)
 # set colors
 cols <- brewer.pal(8, "Set2")
 cols <- cols[seq(2,(num_k + 1), 1)]
-# prepare spaces to separate the populations/species
+# prepare spaces to separate the populations/species in the plot
 rep <- sampleorder %>% count(pop)
 spaces <- 0
 for(i in 1 : length(rep$n)){spaces = c(spaces, rep(0, rep$n[i]-1), 0.5)}
@@ -96,23 +98,25 @@ spaces <- spaces[-length(spaces)]
 # 5. Plot!
 pdf(outbarplot, height = (num_k * 2), width = 18)
 if (num_k == min_k) par(mar = c(7,2,2,2))
-if (num_k > min_k) par(mfcol = c((num_k - 1),1), mar = c(0,3,0,2), oma = c(2,0,15,0))
+if (num_k > min_k) par(mfcol = c((num_k - 1),1), mar = c(0.2,3,0.2,2), oma = c(2,0,15,0))
 
 for (aaa in 2 : num_k)
 {
     if (aaa == 2) Kcolor <- cols[1 : aaa] else Kcolor <- append(Kcolor, cols[aaa])
     
     bp <- barplot(Kdata_t[[aaa-1]][1 : aaa,], names.arg = Kdata_t[[aaa-1]][nrow(Kdata_t[[aaa-1]]),], 
-        axisnames = FALSE, col = Kcolor, border = NA, space = spaces, axes = FALSE, ylim = c(0, 1))
-    # abline(v = seq(1, length(sampleorder)), lwd = 0.5) # draw a black line between bars
+                  axisnames = FALSE, col = Kcolor, border = NA, space = spaces, axes = FALSE, ylim = c(0, 1)
+                 )
+    # draw a black line between bars
+    # abline(v = seq(1, length(sampleorder)), lwd = 0.5)
     mtext(paste0("K = ", aaa), side = 4, line = -2, adj = 0.5, cex = 2, col = "#505050", outer = FALSE, padj = 0)
     # y axis tick marks
-    axis(2, at = c(0, 0.2, 0.4, 0.6, 0.8), line = -4, cex.axis = 2, las = 2)
+    axis(2, at = c(0, 0.2, 0.4, 0.6, 0.8, 1.0), line = -4, cex.axis = 2, las = 2)
     
     if (aaa == min_k) {
-    # sample name labels are plotted at the top of the barplot
+    # sample name labels on top of the plot
     mtext(text = Kdata_t[[aaa-1]][nrow(Kdata_t[[aaa-1]]),], at = bp, 
-    side = 3, cex = 0.8, las = 2, col = "#505050", line = 1)
+    side = 3, cex = 0.6, las = 2, col = "#505050", line = 1)
     }
 }
 dev.off()
