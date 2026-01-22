@@ -42,7 +42,7 @@ gatk --java-options "-Djava.io.tmpdir=tmp -Xmx90G" SelectVariants \
 --restrict-alleles-to BIALLELIC \
 --output ${VCF_PREFIX}_SNPtemp.vcf.gz
 
-# Filter SNPs using Hard-Filtering best practice from GATK
+# Filter SNPs using Hard-Filtering best practice from GATK, and minimum/maximum read depth per locus
 ##https://gatk.broadinstitute.org/hc/en-us/articles/360035531112--How-to-Filter-variants-either-with-VQSR-or-by-hard-filtering
 ##https://gatk.broadinstitute.org/hc/en-us/articles/360035890471
 gatk --java-options "-Djava.io.tmpdir=tmp -Xmx90G" VariantFiltration \
@@ -86,3 +86,15 @@ gatk --java-options "-Djava.io.tmpdir=tmp -Xmx90G" SelectVariants \
 -L Chr14_male.SDR \
 --output ${VCF_PREFIX}_filtered_SDRonly.vcf.gz \
 --exclude-filtered
+
+# Filter out loci with singletons (1 HET) or doubletons (1 HOMO ALT) to remove private alleles
+bcftools view -i 'COUNT(GT="het") > 1 || COUNT(GT="AA") > 1' ${VCF_PREFIX}_filtered_noSDR.vcf.gz \
+--output ${VCF_PREFIX}_filtered_noSDR_noprivall.vcf.gz \
+--output-type z
+
+# Index file
+gatk --java-options "-Djava.io.tmpdir=tmp -Xmx90G" IndexFeatureFile \
+   -I ${VCF_PREFIX}_filtered_noSDR_noprivall.vcf.gz
+
+# Generate statistics on the final output file
+bcftools stats -s - ${VCF_PREFIX}_filtered_noSDR_noprivall.vcf.gz > ${VCF_PREFIX}_filtered_noSDR_noprivall.stats
