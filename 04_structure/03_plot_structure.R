@@ -6,115 +6,226 @@
 #                                                                                      #
 #--------------------------------------------------------------------------------------#
 
+# Input files and variables
+# ---------------------------------------------------------------------------------------------- #
+
+indir = "/path/to/input/directory/with/Q/matrices"
+outprefix = "output_file_prefix"
+labelfile = "original_sample_order_in_sNMF_analysis" # File containing the sample names used in sNMF analysis (one per line) in the same order
+tot_run = 2 # The total number of runs to be plotted
+tot_k = 4 # The total number of Ks to be plotted
+
+# ---------------------------------------------------------------------------------------------- #
+
+# Activate the conda environment for pophelper
+conda activate pophelper
+
 # Install required packages
-# install.packages(c("RColorBrewer"))
+# install.packages(c("pophelper", "gridExtra", "RColorBrewer"))
 
 # Load required libraries
 library(RColorBrewer)
+library(pophelper)
+library(gridExtra)
 
 #-----------------------------------#
 # 1. K-plot of Cross Entropy values #
 #-----------------------------------#
 
-# Input files and variables
-infile = "K_vs_CrossEntropy.txt"
-num_k = 10
+# Read cross-entropy txt file and order lines numerically
+crossentr <- read.table("K_vs_CrossEntropy.txt", header = TRUE, stringsAsFactors = FALSE)
+crossentr <- crossentr[order(crossentr$K), ]
 
-# Read input files
-mydata <- read.table(infile, header = TRUE, stringsAsFactors = FALSE)
-# Order data by increasing K number
-mydata <- mydata[order(mydata$K), ]
-# Only plot num_k Ks
-datatoplot <- mydata[1 : num_k,]
-# Define output file name
-outfile <- paste(dirname(infile), gsub(".txt", ".pdf", basename(infile)), sep="/")
-# Open pdf file for plotting
+# Generate output file name and open pdf device
+outfile <- paste(getwd(), "K_vs_CrossEntropy.pdf", sep="/")
 pdf(outfile, width = 7, height = 7)
 
-# Plot!
-# Plot line
-plot(datatoplot$K, datatoplot$Cross_Entropy, 
-     type = "lines", lwd = 2, col = "blue", axes = FALSE, ann = FALSE
-    )
+# Plot
+# Plot lines
+plot(crossentr$K, crossentr$Cross_Entropy, 
+     type = "lines", 
+     lwd = 2,
+     col = "blue", 
+     axes = FALSE, 
+     ann = FALSE)
 # Plot data points
-points(datatoplot$K, datatoplot$Cross_Entropy,
-       pch = 20, cex = 1.5, col = "blue"
-      )
-# Add x and y labels
-title(xlab = "K, number of ancestral populations", ylab = "Min Cross-Entropy", cex.lab = 1.5
-     )
-# Plot x-axis
-axis(side = 1, at = seq(1, num_k, by = 1), labels = TRUE, cex.axis = 1.2
-    )
-# Plot y-axis
-axis(side = 2, cex.axis = 1.2,
-     at = seq(round(min(datatoplot$Cross_Entropy)-0.1, 2), round(max(datatoplot$Cross_Entropy)+0.1, 2), by = 0.01)
-    )
-# Close device
-dev.off()
+points(crossentr$K, crossentr$Cross_Entropy,
+       pch = 20, 
+       cex = 1.5, 
+       col = "blue")
+# Plot title, x- and y-axis labels
+title(xlab = "K, number of ancestral populations", 
+      ylab = "Min Cross-Entropy", 
+      cex.lab = 1.5)
+# Define x-axis parameters
+axis(side = 1, 
+     at = seq(1, tot_k, by = 1), 
+     labels = TRUE, cex.axis = 1.2)
+# Define y-axis parameters
+axis(side = 2, 
+     at = round(seq(min(crossentr$Cross_Entropy), max(crossentr$Cross_Entropy), by = 0.01), 2), 
+     cex.axis = 1.2)
 
+dev.off()
 
 #------------------------------------#
 # 2. Barplot of population structure #
 #------------------------------------#
 
-# Input files and variables
-indir = "/path/to/input/directory/with/Q/matrices"
-prefix = "output_file_prefix"
-namefile = "original_sample_order_in_sNMF_analysis"
-orderfile = "new_sample_order_to_plot"
-num_run = 0 # The run number to be plotted
-min_k = 2 # The minimum K to plot
-num_k = 4 # The maximum K to plot
+# Check input directory
+setwd(indir)
+if (!dir.exists(indir)) stop("Input directory does not exist!")
+
+# Create the list of input files (Q files)
+sfiles <- list.files(path = indir, pattern = ".Q", full.names = TRUE)
 
 # Read input files
-samplenames <- read.table(namefile, header = FALSE, stringsAsFactors = FALSE)
-sampleorder <- read.table(orderfile, col.names = c("ind", "pop"), stringsAsFactors = FALSE)
-outbarplot <- paste0(indir, "/", prefix, "_run", num_run, "_I.", num_k, "_barplot.pdf")
+slist <- readQ(files = sfiles, filetype = "basic")
 
-# 1. Open input files from structure analysis, given the number of Ks
-KdataFiles <- lapply(min_k : num_k,  function(x) read.table(paste0(indir, "/", prefix, "_run", num_run, "_I.", x, ".Q")))
+# Individual labels
+inds <- read.delim(file = labelfile, header = FALSE, stringsAsFactors = FALSE)
+# add individual labels to all runs
+slist <- lapply(slist, "rownames<-", inds$V1)
 
-# 2. Add sample names (original ordering from structure analysis)
-Kdata <- lapply(KdataFiles, function(x) { x$samples <- unlist(samplenames); return(x) } )
+#######
+# 2.1 # Plot barplots for the same k (across runs)
+#######
+# Sort individuals
+# Individuals are by default plotted in the order as in the input data. 
+# The individuals can be sorted based on the value of any one of the clusters (‘Cluster1’), ‘all’ or ‘label’. 
+# When using sortind="label", individuals are sorted by individual labels. 
+# Individuals are labelled numerically padded with zeros when useindlab=F. 
+# Labels are taken from the qlist when useindlab=T.
 
-# 3. Order according to user's sample ordering
-Kdata_ord <- lapply(1 : length(Kdata), function(x) { Kdata[[x]] [match(unlist(sampleorder$ind), Kdata[[x]]$samples) , ] })
-# transpose Kdata_ord
-Kdata_t <- lapply(Kdata_ord, t)
+# Define function "plot_k" to plot the same K result across all runs
+plot_k <- function(k_id = 2 : tot_k, slist, outprefix) {
 
-# 4. Prepare the plot
-# set colors
-cols <- brewer.pal(8, "Set2")
-cols <- cols[seq(2,(num_k + 1), 1)]
-# prepare spaces to separate the populations/species in the plot
-rep <- sampleorder %>% count(pop)
-spaces <- 0
-for(i in 1 : length(rep$n)){spaces = c(spaces, rep(0, rep$n[i]-1), 0.5)}
-spaces <- spaces[-length(spaces)]
+  # Indices for this run (e.g. 3 13 23 33 43 53 63 73 83 93)
+  idx <- grep(paste0("_I\\.", k_id, "\\.Q$"), sfiles)
+  # Select data for the current k across runs
+  slist_run <- alignK(slist[idx])
+  
+  plotQ(
+    slist_run,
+    imgoutput = "join",
+    sortind = "all", sharedindlab = FALSE,
+    returnplot = FALSE, exportplot = TRUE,
+    basesize = 11,
 
-# 5. Plot!
-pdf(outbarplot, height = (num_k * 2), width = 18)
-if (num_k == min_k) par(mar = c(7,2,2,2))
-if (num_k > min_k) par(mfcol = c((num_k - 1),1), mar = c(0.2,3,0.2,2), oma = c(2,0,15,0))
+    # Two-line strip panel label
+    splab = paste0("run", seq_len(tot_run), "\n", "K = ", k_id),
 
-for (aaa in 2 : num_k)
-{
-    if (aaa == 2) Kcolor <- cols[1 : aaa] else Kcolor <- append(Kcolor, cols[aaa])
-    
-    bp <- barplot(Kdata_t[[aaa-1]][1 : aaa,], names.arg = Kdata_t[[aaa-1]][nrow(Kdata_t[[aaa-1]]),], 
-                  axisnames = FALSE, col = Kcolor, border = NA, space = spaces, axes = FALSE, ylim = c(0, 1)
-                 )
-    # draw a black line between bars
-    # abline(v = seq(1, length(sampleorder)), lwd = 0.5)
-    mtext(paste0("K = ", aaa), side = 4, line = -2, adj = 0.5, cex = 2, col = "#505050", outer = FALSE, padj = 0)
-    # y-axis tick marks
-    axis(2, at = c(0, 0.2, 0.4, 0.6, 0.8, 1.0), line = -4, cex.axis = 2, las = 2)
-    
-    if (aaa == min_k) {
-    # sample name labels on top of the plot
-    mtext(text = Kdata_t[[aaa-1]][nrow(Kdata_t[[aaa-1]]),], at = bp, 
-    side = 3, cex = 0.6, las = 2, col = "#505050", line = 1)
-    }
+    # Individual labels
+    showindlab = TRUE, useindlab = TRUE,
+    showyaxis = TRUE, showticks = TRUE,
+    indlabangle = 90, indlabsize = 6,
+
+    # Legend
+    showlegend = TRUE,
+    legendkeysize = 8,
+    legendtextsize = 10,
+    legendlab = paste0("group ", 1 : k_id),
+
+    # Export
+    outputfilename = paste0(outprefix, "_K", k_id, "_allruns"),
+    imgtype = "pdf",
+    height = 5, width = 30,
+    exportpath = getwd()
+  )
 }
-dev.off()
+
+plot_each_k <- lapply(1 : tot_run, 
+                   plot_k,
+                   slist = slist,
+                   outprefix = outprefix)
+
+#######
+# 2.2 # Plot barplots for the same run
+#######
+
+# Open Q matrix files from k=2 to tot_k
+runlist <- readQ(
+  files = unlist(lapply(2 : tot_k, function(k)
+    list.files(path = indir, pattern = paste0(k, "\\.Q"), full.names = TRUE)
+  )),
+  filetype = "basic"
+)
+
+# Individual labels
+inds <- read.delim(file = labelfile, header = FALSE, stringsAsFactors = FALSE)
+runlist <- lapply(runlist, "rownames<-", inds$V1)
+
+# Define function "plot_run" to plot all ks for each run
+plot_run <- function(run_id, runlist, tot_k, outprefix) {
+
+  # extract all the files of the current run
+  idx <- grep(paste0("_run", run_id, "_I\\."), rownames(summary(runlist)))
+  runlist <- alignK(runlist[idx])
+  
+  plotQ(
+    runlist,
+    imgoutput = "join",
+    sortind = "all", sharedindlab = FALSE,
+    returnplot = FALSE, exportplot = TRUE,
+    basesize = 11,
+
+    # Two-line strip panel label
+    splab = paste0("run", run_id, "\nK = ", 2 : tot_k),
+
+    # Individual labels
+    showindlab = TRUE, useindlab = TRUE,
+    showyaxis = TRUE, showticks = TRUE,
+    indlabangle = 90, indlabsize = 6,
+
+    # Legend
+    showlegend = TRUE,
+    legendkeysize = 8,
+    legendtextsize = 10,
+    legendlab = paste0("group ", 1 : tot_k),
+
+    # Export
+    outputfilename = paste0(outprefix, "_allKs_run", run_id),
+    imgtype = "pdf",
+    height = 5, width = 30,
+    exportpath = getwd()
+  )
+}
+
+plot_each_run <- lapply(0 : (tot_run-1), 
+                   plot_run,
+                   runlist = runlist,
+                   tot_k = tot_k,
+                   outprefix = outprefix)
+
+#######
+# 2.3 # Barplot by K for all runs
+#######
+
+allkruns <- plotQ(alignK(runlist),
+        imgoutput = "join",
+        # sharedindlab must be set to FALSE when sorting individuals
+        sortind = "all", sharedindlab = FALSE,
+        returnplot = FALSE, exportplot = TRUE, 
+        basesize = 11,
+
+        # Two-line strip panel label
+        splab = paste0("K = ", rep(c(2 : tot_k), each = tot_run), "\nrun", seq(1, tot_run)),
+
+        # Individual labels
+        showindlab = TRUE, useindlab = TRUE, 
+        showyaxis = TRUE, showticks = TRUE,
+        indlabangle = 90, indlabsize = 3,
+
+        # Show legend
+        showlegend = TRUE, 
+        legendkeysize = 8, 
+        legendtextsize = 10,
+        legendlab = paste0("group ", 1 : tot_k),
+
+        # Export file
+        outputfilename = paste0(outprefix, "_allKs_allruns"),
+        imgtype = "pdf", 
+        height = 5, 
+        width = 30, 
+        exportpath = getwd()
+        )
