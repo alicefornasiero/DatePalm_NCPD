@@ -30,8 +30,11 @@ module load gatk/4.3.0.0
 module load tabix/1.16
 module load bcftools/1.16
 
-# Change directory to snp call output directory
-cd ${PROJECT_FOLDER}/04_snpcall
+# Create output directory and subdirectories and change to filtered snps output direc
+FILT_DIR=${PROJECT_FOLDER}/05_filtering
+mkdir -p ${FILT_DIR}
+mkdir -p ${FILT_DIR}/tmp
+cd ${FILT_DIR}
 
 # Select biallelic SNPs only (exclude indels and non-biallelic SNPs)
 ##https://gatk.broadinstitute.org/hc/en-us/articles/360035531112--How-to-Filter-variants-either-with-VQSR-or-by-hard-filtering
@@ -77,25 +80,26 @@ gatk --java-options "-Djava.io.tmpdir=tmp -Xmx90G" SelectVariants \
 -R ${REFERENCE} \
 -V ${VCF_PREFIX}_SNP_HF.vcf.gz \
 ${CHR_LIST} \
---output ${VCF_PREFIX}_filtered_noSDR.vcf.gz \
---exclude-filtered
+--output ${VCF_PREFIX}_filt_noSDR.vcf.gz \
+--exclude-filt
 
 # Select SNPs from the SDR only
+# Run this step only if needed (i.e. if you are interested in analysing polymorphisms on the male SDR)
 gatk --java-options "-Djava.io.tmpdir=tmp -Xmx90G" SelectVariants \
 -R ${REFERENCE} \
 -V ${VCF_PREFIX}_SNP_HF.vcf.gz \
 -L Chr14_male.SDR \
---output ${VCF_PREFIX}_filtered_SDRonly.vcf.gz \
---exclude-filtered
+--output ${VCF_PREFIX}_filt_SDRonly.vcf.gz \
+--exclude-filt
 
 # Filter out loci with singletons (1 HET) or doubletons (1 HOMO ALT) to remove private alleles
-bcftools view -i 'COUNT(GT="het") > 1 || COUNT(GT="AA") > 1' ${VCF_PREFIX}_filtered_noSDR.vcf.gz \
---output ${VCF_PREFIX}_filtered_noSDR_noprivall.vcf.gz \
+bcftools view -i 'COUNT(GT="het") > 1 || COUNT(GT="AA") > 1' ${VCF_PREFIX}_filt_noSDR.vcf.gz \
+--output ${VCF_PREFIX}_filt_noSDR_noprivall.vcf.gz \
 --output-type z
 
 # Index file
 gatk --java-options "-Djava.io.tmpdir=tmp -Xmx90G" IndexFeatureFile \
-   -I ${VCF_PREFIX}_filtered_noSDR_noprivall.vcf.gz
+   -I ${VCF_PREFIX}_filt_noSDR_noprivall.vcf.gz
 
 # Generate statistics on the final output file
-bcftools stats -s - ${VCF_PREFIX}_filtered_noSDR_noprivall.vcf.gz > ${VCF_PREFIX}_filtered_noSDR_noprivall.stats
+bcftools stats -s - ${VCF_PREFIX}_filt_noSDR_noprivall.vcf.gz > ${VCF_PREFIX}_filt_noSDR_noprivall.stats
