@@ -9,6 +9,7 @@
 #SBATCH --mem=50G
 
 # Exclude clones from the filtered vcf file
+# Remove private alleles by excluding loci genotyped in one individual (i.e. singletons (1 HET) or doubletons (1 HOMO ALT))
 
 # ----------------------------------------------------------------------- #
 # Make sure you update input and output folder path
@@ -26,6 +27,7 @@ module purge
 module load gatk/4.3.0.0
 module load tabix/1.16
 module load plink
+module load bcftools/1.16
 
 # Change directory to snp call output directory
 cd ${PROJECT_FOLDER}/05_filtering
@@ -35,3 +37,15 @@ gatk --java-options "-Djava.io.tmpdir=tmp -Xmx90G" SelectVariants \
 -V ${VCF_PREFIX}_filtered_noSDR.vcf.gz \
 --exclude-sample-name ${EXCLUDE_SAMPLES} \
 --output ${VCF_PREFIX}_filt_noSDR_noclones.vcf.gz
+
+# Filter out loci with singletons (1 HET) or doubletons (1 HOMO ALT) 
+bcftools view -i 'COUNT(GT="het") > 1 || COUNT(GT="AA") > 1' ${VCF_PREFIX}_filt_noSDR_noclones.vcf.gz \
+--output ${outprefix}.vcf.gz \
+--output-type z
+
+# Index file
+gatk --java-options "-Djava.io.tmpdir=tmp -Xmx90G" IndexFeatureFile \
+   -I ${VCF_PREFIX}_filt_noSDR_noclones_noprivall.vcf.gz
+
+# Generate vcf statistics
+bcftools stats -s - ${VCF_PREFIX}_filt_noSDR_noclones_noprivall.vcf.gz > ${VCF_PREFIX}_filt_noSDR_noclones_noprivall.stats
