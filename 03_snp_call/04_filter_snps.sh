@@ -28,6 +28,7 @@ MAXDP="ENTER_MAXIMUM_INFO_DP"
 module purge
 module load gatk/4.3.0.0
 module load tabix/1.16
+module load bcftools/1.16
 
 # Change directory to snp call output directory
 cd ${PROJECT_FOLDER}/04_snpcall
