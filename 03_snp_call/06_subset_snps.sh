@@ -33,15 +33,15 @@ cd ${PROJECT_FOLDER}/05_filtering
 
 # GATK SelectVariants to random sample genotypes (--select-random-fraction: number between 0 and 1 specifying the fraction of total variants to be randomly selected from the input callset.)
 gatk --java-options "-Djava.io.tmpdir=tmp -Xmx90G" SelectVariants \
--V ${VCF_PREFIX}_filt_noSDR_noclones_privall.vcf.gz \
+-V ${VCF_PREFIX}_filt_noSDR_noclones_noprivall.vcf.gz \
 --select-random-fraction ${FRACTION} \
---output ${VCF_PREFIX}_filt_noSDR_noclones_privall_snpsubset.vcf.gz
+--output ${VCF_PREFIX}_filt_noSDR_noclones_noprivall_subset.vcf.gz
 
 # Generate Plink pgen files from the vcf file
-plink2 --vcf ${VCF_PREFIX}_filt_noSDR_noclones_privall_snpsubset.vcf.gz \
+plink2 --vcf ${VCF_PREFIX}_filt_noSDR_noclones_noprivall_subset.vcf.gz \
 --allow-extra-chr \
 --make-pgen \
---out ${VCF_PREFIX}_filt_noSDR_noclones_privall_snpsubset
+--out ${VCF_PREFIX}_filt_noSDR_noclones_noprivall_subset
 
 # Generate vcf statistics
-bcftools stats -s - ${VCF_PREFIX}_filt_noSDR_noclones_privall_snpsubset.vcf.gz > ${VCF_PREFIX}_filt_noSDR_noclones_privall_snpsubset.stats
+bcftools stats -s - ${VCF_PREFIX}_filt_noSDR_noclones_noprivall_subset.vcf.gz > ${VCF_PREFIX}_filt_noSDR_noclones_noprivall_subset.stats
