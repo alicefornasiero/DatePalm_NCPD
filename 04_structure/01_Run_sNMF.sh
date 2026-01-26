@@ -31,9 +31,9 @@ conda activate snmf
 module load plink/2.0
 
 # Create output directory and change directory to output directory
-STRUCT_DIR="${PROJECT_FOLDER}/06_structure"
-mkdir -p ${STRUCT_DIR}
-cd ${STRUCT_DIR}
+cd ${PROJECT_FOLDER}/06_structure
+mkdir -p pop_structure
+cd pop_structure
 
 # Job array: each job corresponds to a run
 IFS=$'\n' read -d '' -r -a lines < ${RUNFILE}
