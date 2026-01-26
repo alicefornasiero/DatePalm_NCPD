@@ -40,7 +40,7 @@ gatk --java-options "-Djava.io.tmpdir=tmp -Xmx90G" SelectVariants \
 
 # Filter out loci with singletons (1 HET) or doubletons (1 HOMO ALT) 
 bcftools view -i 'COUNT(GT="het") > 1 || COUNT(GT="AA") > 1' ${VCF_PREFIX}_filt_noSDR_noclones.vcf.gz \
---output ${outprefix}.vcf.gz \
+--output ${VCF_PREFIX}_filt_noSDR_noclones_noprivall.vcf.gz \
 --output-type z
 
 # Index file
