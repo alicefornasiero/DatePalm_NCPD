@@ -34,10 +34,16 @@ pca <- read_table(paste0(inprefix, ".eigenvec"), col_names = TRUE)
 names(pca)[1] <- "sample"
 eigenval <- scan(paste0(inprefix, ".eigenval"))
 
-# Sort out female and male accessions from the name
-if(length(grep("Male", pca$sample))==0) { pca$spp <- "Female" } else pca$spp <- "Male"
-pca$col <- "blue"
-pca$col[pca$spp!="Male"] <- "darkorange1"
+# Sort out the individual species and pops
+pca <- pca %>%
+  mutate(spp = case_when(
+    str_detect(sample, "Male-") ~ "Male",
+    str_detect(sample, "F1-")   ~ "F1",
+    TRUE                       ~ "Female"
+  ))
+
+# Define colors for each sample category
+cols <- c("Male" = "blue", "F1" = "purple", "Female" = "darkorange1")
 
 # Convert eigenvalues into percentage of variance explained
 pve <- data.frame(PC = 1:10, pve = eigenval/sum(eigenval)*100)
@@ -66,14 +72,13 @@ outpca12 <- ifelse(max_overlaps == 0,
                    paste0(indir, "/", inprefix, ".PC1-PC2.pdf"))
 
 pca_plot12 <- ggplot(pca, aes(PC1, PC2, col = spp)) + 
-              geom_point(size = 3, alpha = 0.5) +
+              geom_point(size = 1.5, alpha = 0.5) +
               geom_text_repel(label = pca$"sample", 
                 min.segment.length = 0.2, 
                 seed = 42, box.padding = 0.2, 
                 xlim = c(-Inf, Inf), ylim = c(-Inf, Inf), 
                 max.overlaps = max_overlaps, size = 2) + 
-              scale_colour_manual(values = pca$col, name = NULL) +
-              coord_equal() +
+              scale_colour_manual(values = cols, name = NULL) +
               geom_vline(aes(xintercept = 0), linetype = "dashed", linewidth = 0.5) +
               geom_hline(aes(yintercept = 0), linetype = "dashed", linewidth = 0.5) +
               scale_x_continuous(name = paste0("PC1 (", signif(pve$pve[1], 3), "%)"),
@@ -93,14 +98,13 @@ outpca13 <- ifelse(max_overlaps == 0,
                    paste0(indir, "/", inprefix, ".PC1-PC3.pdf"))
 
 pca_plot13 <- ggplot(pca, aes(PC1, PC3, col = spp)) + 
-              geom_point(size = 3, alpha = 0.5) +
+              geom_point(size = 1.5, alpha = 0.5) +
               geom_text_repel(label = pca$"sample", 
                 min.segment.length = 0.2, 
                 seed = 42, box.padding = 0.2, 
                 xlim = c(-Inf, Inf), ylim = c(-Inf, Inf), 
                 max.overlaps = max_overlaps, size = 2) +
-              scale_colour_manual(values = pca$col, name = NULL) +
-              coord_equal() +
+              scale_colour_manual(values = cols, name = NULL) +
               geom_vline(aes(xintercept = 0), linetype = "dashed", linewidth = 0.5) +
               geom_hline(aes(yintercept = 0), linetype = "dashed", linewidth = 0.5) +
               scale_x_continuous(name = paste0("PC1 (", signif(pve$pve[1], 3), "%)"),
@@ -120,14 +124,13 @@ outpca23 <- ifelse(max_overlaps == 0,
                    paste0(indir, "/", inprefix, ".PC2-PC3.pdf"))
 
 pca_plot23 <- ggplot(pca, aes(PC2, PC3, col = spp)) + 
-              geom_point(size = 3, alpha = 0.5) +
+              geom_point(size = 1.5, alpha = 0.5) +
               geom_text_repel(label = pca$"sample", 
                 min.segment.length = 0.2, 
                 seed = 42, box.padding = 0.2, 
                 xlim = c(-Inf, Inf), ylim = c(-Inf, Inf), 
                 max.overlaps = max_overlaps, size = 2) +
-              scale_colour_manual(values = pca$col, name = NULL) +
-              coord_equal() +
+              scale_colour_manual(values = cols, name = NULL) +
               geom_vline(aes(xintercept = 0), linetype = "dashed", linewidth = 0.5) +
               geom_hline(aes(yintercept = 0), linetype = "dashed", linewidth = 0.5) +
               scale_x_continuous(name = paste0("PC2 (", signif(pve$pve[2], 3), "%)"),
