@@ -1,20 +1,23 @@
 #!/usr/bin/env Rscript
-#--------------------------------------------------------------------------------------#
-#                                                                                      #
-#         Plot the cross-entropy criterion to infer the best estimate of K.            #
-# The lower the cross-entropy, the better the model accounts for population structure. #
-#                                                                                      #
-#--------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------#
+#         Plot the cross-entropy criterion to infer the best estimate of K.      #
+# Generate barplots of population structure representing the estimted individual #
+#                         admixture coefficients.                                #
+#--------------------------------------------------------------------------------#
 
 # Input files and variables
 # ---------------------------------------------------------------------------------------------- #
+# indir - Path to the input directory containing the Q matrices obtained with sNMF analysis
+# outprefix - Prefix name of the output files
+# labelfile - File containing the sample names used in sNMF (one per line), in the same order
+# tot_run -  The total number of runs to be plotted
+# tot_k - The total number of Ks to be plotted
 
 indir = "/path/to/input/directory/with/Q/matrices"
 outprefix = "output_file_prefix"
-labelfile = "original_sample_order_in_sNMF_analysis" # File containing the sample names used in sNMF analysis (one per line) in the same order
-tot_run = 2 # The total number of runs to be plotted
-tot_k = 4 # The total number of Ks to be plotted
-
+labelfile = "original_sample_order_in_sNMF_analysis"
+tot_run = 2
+tot_k = 4
 # ---------------------------------------------------------------------------------------------- #
 
 # Activate the conda environment for pophelper
@@ -24,9 +27,9 @@ conda activate pophelper
 # install.packages(c("pophelper", "gridExtra", "RColorBrewer"))
 
 # Load required libraries
-library(RColorBrewer)
 library(pophelper)
 library(gridExtra)
+library(RColorBrewer)
 
 #-----------------------------------#
 # 1. K-plot of Cross Entropy values #
@@ -140,7 +143,7 @@ plot_each_k <- lapply(1 : tot_run,
                    outprefix = outprefix)
 
 #######
-# 2.2 # Plot barplots for the same run
+# 2.2 # Plot barplots for the same run (across Ks)
 #######
 
 # Open Q matrix files from k=2 to tot_k
@@ -158,7 +161,7 @@ runlist <- lapply(runlist, "rownames<-", inds$V1)
 # Define function "plot_run" to plot all ks for each run
 plot_run <- function(run_id, runlist, tot_k, outprefix) {
 
-  # extract all the files of the current run
+  # Extract all the files of the current run
   idx <- grep(paste0("_run", run_id, "_I\\."), rownames(summary(runlist)))
   runlist <- alignK(runlist[idx])
   
