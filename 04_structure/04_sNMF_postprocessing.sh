@@ -1,4 +1,22 @@
-# You have previously run sNMF (see 01_Run_sNMF.sh) and obtained the Q matrices for each run and each K.
+#!/bin/bash
+#SBATCH --time=00:10:00
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=1
+#SBATCH --partition=batch
+#SBATCH --job-name postsNMF
+#SBATCH -o postsNMF.%J.out
+#SBATCH -e postsNMF.%J.err
+#SBATCH --mem=1G
+
+# You have previously run sNMF (see script 03_Run_sNMF.sh) and obtained the Q matrices for each run and each K.
+
+# :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
+# PROJECT_FOLDER is the path to the project folder
+PROJECT_FOLDER="ENTER_OUTPUT_DIRECTORY_PATH"
+# :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: #
+
+# Change directory to the directory containing sNMF output files
+cd ${PROJECT_FOLDER}/06_structure/pop_structure
 
 # Define which run had the least entropy and the number of ancestral populations, K
 min_entropy=$(grep "Cross-Entropy (masked data):" crossEntropy_run*_K*.log | cut -f2 | sort | head -n1)
