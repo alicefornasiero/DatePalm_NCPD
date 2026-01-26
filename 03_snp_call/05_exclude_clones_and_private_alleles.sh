@@ -34,7 +34,7 @@ cd ${PROJECT_FOLDER}/05_filtering
 
 # GATK SelectVariants to exclude clone samples (--exclude-sample-name HERE WE ARE EXCLUDING SAMPLES LISTED IN list.args)
 gatk --java-options "-Djava.io.tmpdir=tmp -Xmx90G" SelectVariants \
--V ${VCF_PREFIX}_filtered_noSDR.vcf.gz \
+-V ${VCF_PREFIX}_filt_noSDR.vcf.gz \
 --exclude-sample-name ${EXCLUDE_SAMPLES} \
 --output ${VCF_PREFIX}_filt_noSDR_noclones.vcf.gz
 
