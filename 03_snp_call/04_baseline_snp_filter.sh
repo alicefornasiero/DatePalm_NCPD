@@ -13,7 +13,7 @@
 # ----------------------------------------------------------------------- #
 # PROJECT_FOLDER is the path to the project folder
 # REFERENCE is the path to the reference genome in fasta format
-# VCF_PREFIX is the name of the GVCF output file
+# VCF_PREFIX is the name of the GVCF file
 # MINDP is the minimum depth (DP) value over all samples at the site level (INFO)
 # MAXDP is the maximum depth (DP) value over all samples at the site level (INFO)
 
