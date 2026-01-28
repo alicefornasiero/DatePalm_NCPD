@@ -9,7 +9,6 @@
 #SBATCH --mem=50G
 
 # Exclude clones from the filtered vcf file
-# Remove private alleles by excluding loci genotyped in one individual (i.e. singletons (1 HET) or doubletons (1 HOMO ALT))
 
 # ----------------------------------------------------------------------- #
 # Make sure you update input and output folder path
@@ -25,9 +24,6 @@ EXCLUDE_SAMPLES="ENTER_.ARGS_FILE_NAME_AND_PATH"
 # Load modules
 module purge
 module load gatk/4.3.0.0
-module load tabix/1.16
-module load plink
-module load bcftools/1.16
 
 # Change directory to snp call output directory
 cd ${PROJECT_FOLDER}/05_filtering
