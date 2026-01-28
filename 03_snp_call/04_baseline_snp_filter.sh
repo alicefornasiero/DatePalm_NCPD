@@ -92,14 +92,5 @@ gatk --java-options "-Djava.io.tmpdir=tmp -Xmx90G" SelectVariants \
 --output ${VCF_PREFIX}_filt_SDRonly.vcf.gz \
 --exclude-filt
 
-# Filter out loci with singletons (1 HET) or doubletons (1 HOMO ALT) to remove private alleles
-bcftools view -i 'COUNT(GT="het") > 1 || COUNT(GT="AA") > 1' ${VCF_PREFIX}_filt_noSDR.vcf.gz \
---output ${VCF_PREFIX}_filt_noSDR_noprivall.vcf.gz \
---output-type z
-
-# Index file
-gatk --java-options "-Djava.io.tmpdir=tmp -Xmx90G" IndexFeatureFile \
-   -I ${VCF_PREFIX}_filt_noSDR_noprivall.vcf.gz
-
 # Generate statistics on the final output file
 bcftools stats -s - ${VCF_PREFIX}_filt_noSDR_noprivall.vcf.gz > ${VCF_PREFIX}_filt_noSDR_noprivall.stats
