@@ -8,7 +8,7 @@
 #SBATCH -e snp_subset.%J.err
 #SBATCH --mem=50G
 
-# Subset a fraction of the genotyped loci randomly
+# Randomly subset a fraction of the genotyped loci from the vcf file
 
 # ----------------------------------------------------------------------- #
 # Make sure you update input and output folder path
