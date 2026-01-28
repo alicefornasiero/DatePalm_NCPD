@@ -13,7 +13,7 @@
 # ----------------------------------------------------------------------- #
 # Make sure you update input and output folder path
 # PROJECT_FOLDER is the path to the project folder
-# VCF_PREFIX is the prefix name of the GVCF output file
+# VCF_PREFIX is the prefix name of the GVCF file
 # FRACTION is the proportion (between 0 and 1) of genotyped loci to be randomly subset
 
 PROJECT_FOLDER="ENTER_OUTPUT_DIRECTORY_PATH"
@@ -25,7 +25,6 @@ FRACTION="ENTER_SNP_FRACTION_TO_RECOVER"
 module purge
 module load plink #PLINK 2.0
 module load gatk/4.3.0.0
-module load tabix/1.16
 module load bcftools/1.16
 
 # Change directory to snp filtering directory
