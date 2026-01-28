@@ -13,7 +13,7 @@
 # ----------------------------------------------------------------------- #
 # Make sure you update input and output folder path
 # PROJECT_FOLDER is the path to the project folder
-# VCF_PREFIX is the prefix name of the GVCF output file
+# VCF_PREFIX is the prefix name of the GVCF file
 # EXCLUDE_SAMPLES is the file name including full path of a .args file with the list of samples to exclude (one per line)
 
 PROJECT_FOLDER="ENTER_OUTPUT_DIRECTORY_PATH"
