@@ -99,8 +99,3 @@ snpgdsDrawTree(cutTree, main = "",
     leaflab = "perpendicular"
     )
 dev.off()
-
-# the distribution of Z scores
-pdf(paste0(outfolder, "/Zscore", zscore, "_distribution.pdf"), width = 14, height = 7)
-snpgdsDrawTree(cutTree, type="z-score", main="Male accessions")
-dev.off()
