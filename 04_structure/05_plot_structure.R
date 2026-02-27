@@ -16,12 +16,9 @@
 indir = "/path/to/input/directory/with/Q/matrices"
 outprefix = "output_file_prefix"
 labelfile = "original_sample_order_in_sNMF_analysis"
-tot_run = 2
+tot_run = 10
 tot_k = 4
 # ---------------------------------------------------------------------------------------------- #
-
-# Activate the conda environment for pophelper
-conda activate pophelper
 
 # Install required packages
 # install.packages(c("pophelper", "gridExtra", "RColorBrewer"))
