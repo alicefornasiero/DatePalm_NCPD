@@ -38,12 +38,11 @@ eigenval <- scan(paste0(inprefix, ".eigenval"))
 pca <- pca %>%
   mutate(spp = case_when(
     str_detect(sample, "Male-") ~ "Male",
-    str_detect(sample, "F1-")   ~ "F1",
-    TRUE                       ~ "Female"
+    TRUE ~ "Female"
   ))
 
 # Define colors for each sample category
-cols <- c("Male" = "blue", "F1" = "purple", "Female" = "darkorange1")
+cols <- c("Male" = "blue", "Female" = "darkorange1")
 
 # Convert eigenvalues into percentage of variance explained
 pve <- data.frame(PC = 1:10, pve = eigenval/sum(eigenval)*100)
