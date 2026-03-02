@@ -219,7 +219,7 @@ allkruns <- plotQ(alignK(runlist),
         # Individual labels
         showindlab = TRUE, useindlab = TRUE, 
         showyaxis = TRUE, showticks = TRUE,
-        indlabangle = 90, indlabsize = 3,
+        indlabangle = 90, indlabsize = 6,
 
         # Show legend
         showlegend = TRUE, 
