@@ -73,10 +73,10 @@ p1 <- ggplot() +
         shape = 21, color = "black", alpha = 0.5, 
         size = df_layer_2$size) +
         scale_fill_manual(values = c( "clone" = "blue")) +
-        scale_x_continuous(
+    scale_x_continuous(
           breaks = round(seq(min(count_data$logR1), max(count_data$logR1), 0.4), 1),
           name = expression(Log[10](R1))) +
-        scale_y_continuous(
+    scale_y_continuous(
           breaks = round(seq(min(count_data$KING), max(count_data$KING), 0.2), 1),
           name = "KING Robust")
 
@@ -96,11 +96,11 @@ p2 <- ggplot() +
         aes(x = logR1, y = R0, fill = relation), 
         shape = 21, color = "black", alpha = 0.5, 
         size = df_layer_2$size) +
-        scale_fill_manual(values = c( "clone" = "blue")) +
-        scale_x_continuous(
+    scale_fill_manual(values = c( "clone" = "blue")) +
+    scale_x_continuous(
           breaks = round(seq(min(count_data$logR1), max(count_data$logR1), 0.4), 1),
           name = expression(Log[10](R1))) +
-        scale_y_continuous(
+    scale_y_continuous(
           breaks = round(seq(min(count_data$R0), max(count_data$R0), 2), 1),
           name = "R0")
 
