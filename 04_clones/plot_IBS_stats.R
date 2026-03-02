@@ -52,7 +52,7 @@ write.table(clone_ibs,
     paste0(indir, "/", outprefix, "_clones.txt"), 
     sep = "\t", quote = FALSE, row.names = FALSE, col.names = TRUE)
 
-# Create two layers to plot to emphasize the color and dot size of the known relationships
+# Create two layers to plot to emphasize the color and dot size of the clones
 count_data$size <- 2.5
 count_data$size[count_data$relation == "unknown"] <- 1.5
 df_layer_1 <- count_data[count_data$relation == "unknown" ,]
