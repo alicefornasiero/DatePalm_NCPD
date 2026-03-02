@@ -42,24 +42,23 @@ bed.fn <- paste0(infile, ".bed")
 fam.fn <- paste0(infile, ".fam")
 bim.fn <- paste0(infile, ".bim")
 
+# Define gds file path
+gds_file <- paste0(infile, ".gds")
+
 # Convert bed file into SNP GDS file (only once)
-if (!file.exists(paste0(infile, ".gds"))) {
-    genofile <- snpgdsBED2GDS(bed.fn, fam.fn, bim.fn, paste0(infile, ".gds"), cvt.chr = "char")
-    geno <- snpgdsOpen(genofile)
-    } else {
-    # genofile is already written in indir
-    genofile <- paste0(infile, ".gds")
+if (!file.exists(gds_file)) {
+    gds_file <- snpgdsBED2GDS(bed.fn, fam.fn, bim.fn, gds_file, cvt.chr = "char")
     }
 
 # Open GDS file
-geno <- snpgdsOpen(genofile)
+geno <- snpgdsOpen(gds_file)
 
 # Read sample name list
 label_df <- read.table(sampleAnnot, header = TRUE)
 colnames(label_df) <- c("orig_name", "labels")
 
-# Create a copy of genofile that can be overwritten (geno is read-only)
-genotoplot <- snpgdsOpen(genofile, readonly = FALSE, allow.duplicate = TRUE)
+# Create a copy of gds_file that can be overwritten (geno is read-only)
+genotoplot <- snpgdsOpen(gds_file, readonly = FALSE, allow.duplicate = TRUE)
 # Replace sample ids with final sample labels from the sampleAnnot file
 add.gdsn(genotoplot, name = "sample.id", val = label_df$labels, replace = TRUE)
 
@@ -100,3 +99,6 @@ snpgdsDrawTree(cutTree, main = "",
     leaflab = "perpendicular"
     )
 dev.off()
+
+# Close gds file
+snpgdsClose(geno)
