@@ -43,11 +43,12 @@ fam.fn <- paste0(infile, ".fam")
 bim.fn <- paste0(infile, ".bim")
 
 # Convert bed file into SNP GDS file (only once)
-if (!file.exists(paste0(infile, ".gds")) {
-genofile <- snpgdsBED2GDS(bed.fn, fam.fn, bim.fn, paste0(infile, ".gds"), cvt.chr = "char")
+if (!file.exists(paste0(infile, ".gds"))) {
+    genofile <- snpgdsBED2GDS(bed.fn, fam.fn, bim.fn, paste0(infile, ".gds"), cvt.chr = "char")
+    geno <- snpgdsOpen(genofile)
     } else {
-# Read .gds file once it is written in indir instead of generating it from scratch
-genofile <- paste0(infile, ".gds")
+    # genofile is already written in indir
+    genofile <- paste0(infile, ".gds")
     }
 
 # Open GDS file
