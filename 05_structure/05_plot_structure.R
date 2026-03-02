@@ -21,12 +21,11 @@ tot_k = 4
 # ---------------------------------------------------------------------------------------------- #
 
 # Install required packages
-# install.packages(c("pophelper", "gridExtra", "RColorBrewer"))
+# install.packages(c("pophelper", "gridExtra"))
 
 # Load required libraries
 library(pophelper)
 library(gridExtra)
-library(RColorBrewer)
 
 #-----------------------------------#
 # 1. K-plot of Cross Entropy values #
@@ -39,6 +38,9 @@ crossentr <- crossentr[order(crossentr$K), ]
 # Generate output file name and open pdf device
 outfile <- paste(getwd(), "K_vs_CrossEntropy.pdf", sep="/")
 pdf(outfile, width = 7, height = 7)
+
+# Define color-blind friendy color palette
+clist <- c("#CC6677", "#332288", "#DDCC77", "#117733", "#88CCEE", "#882255", "#44AA99", "#999933", "#00A0B0", "#6A4A3C", "#CC333F", "#EB6841", "#EDC951")
 
 # Plot
 # Plot lines
@@ -111,6 +113,7 @@ plot_k <- function(k_id = 2 : tot_k, slist, outprefix) {
     sortind = "all", sharedindlab = FALSE,
     returnplot = FALSE, exportplot = TRUE,
     basesize = 11,
+    clustercol = clist,
 
     # Two-line strip panel label
     splab = paste0("run", seq_len(tot_run), "\n", "K = ", k_id),
@@ -168,6 +171,7 @@ plot_run <- function(run_id, runlist, tot_k, outprefix) {
     sortind = "all", sharedindlab = FALSE,
     returnplot = FALSE, exportplot = TRUE,
     basesize = 11,
+    clustercol = clist,
 
     # Two-line strip panel label
     splab = paste0("run", run_id, "\nK = ", 2 : tot_k),
@@ -207,6 +211,7 @@ allkruns <- plotQ(alignK(runlist),
         sortind = "all", sharedindlab = FALSE,
         returnplot = FALSE, exportplot = TRUE, 
         basesize = 11,
+        clustercol = clist,
 
         # Two-line strip panel label
         splab = paste0("K = ", rep(c(2 : tot_k), each = tot_run), "\nrun", seq(1, tot_run)),
