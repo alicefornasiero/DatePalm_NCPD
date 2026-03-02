@@ -46,6 +46,12 @@ count_data$KING <- (count_data$IBS2het - (2 * count_data$IBS0)) / (count_data$IB
 count_data$relation <- "unknown"
 count_data$relation[count_data$logR1 > 0] <- "clone"
 
+# write the list of clone pairs and relative IBS statistics
+clone_ibs <- count_data[count_data$logR1 > 0, 1 : (ncol(count_data) -2)]
+write.table(clone_ibs, 
+    paste0(indir, "/", outprefix, "_clones.txt"), 
+    sep = "\t", quote = FALSE, row.names = FALSE, col.names = TRUE)
+
 # Create two layers to plot to emphasize the color and dot size of the known relationships
 count_data$size <- 2.5
 count_data$size[count_data$relation == "unknown"] <- 1.5
