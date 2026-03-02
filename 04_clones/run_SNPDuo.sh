@@ -36,12 +36,15 @@ cd $outdir
 # Run vcftools to generate .tped and .tfam files as input for SNPduo
 vcftools --gzvcf $infile \
 --plink-tped \
---out $(basename $infile .vcf.gz)_tmp
+--out $(basename $infile .vcf.gz)
 
 # If chromosome names contain characters (e.g. chr01), the vcftools command will convert them into 0 in the first column of the .tped file
 # The second column of the .tped file contains chr:pos info (e.g. chr01:100).
 # Modify the .tped file to get chromosome names in the first column by splitting the second column into the originary chr and position columns
-sed 's/:/\t/g' $(basename $infile .vcf.gz)_tmp.tped | awk '{FS=OFS="\t"} {$1=""; sub(FS, ""); print}' >  $(basename $infile .vcf.gz).tped
+sed 's/:/\t/g' $(basename $infile .vcf.gz).tped | awk '{FS=OFS="\t"} {$1=""; sub(FS, ""); print}' >  $(basename $infile .vcf.gz)_tmp.tped
+
+# Rename tmp file
+mv $(basename $infile .vcf.gz)_tmp.tped $(basename $infile .vcf.gz).tped
 
 # Chromosome names have to be numbers only. Remove any character (e.g. "chr", "Chr", ...)
 sed -i 's/Chr0//g' $(basename $infile .vcf.gz).tped
