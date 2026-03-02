@@ -62,9 +62,8 @@ genotoplot <- snpgdsOpen(gds_file, readonly = FALSE, allow.duplicate = TRUE)
 # Replace sample ids with final sample labels from the sampleAnnot file
 add.gdsn(genotoplot, name = "sample.id", val = label_df$labels, replace = TRUE)
 
-# Create color palette to color different groups
-qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
-col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
+# Create color-blind friendly color palette
+clist <- c("#CC6677", "#332288", "#DDCC77", "#117733", "#88CCEE", "#882255", "#44AA99", "#999933", "#00A0B0", "#6A4A3C", "#CC333F", "#EB6841", "#EDC951")
 
 # Identity-By-State(IBS) proportion (function snpgdsIBS): Calculate the fraction of identity by state for each pair of samples
 # The values of the IBS matrix range from 0 to 1 (1: an individual against itself), and it is defined as the average of:
@@ -84,7 +83,7 @@ snpHCluster <- snpgdsHCluster(IBSMatrix, sample.id = NULL, need.mat = TRUE, hang
 
 # Determine groups by permutations:
 cutTree <- snpgdsCutTree(snpHCluster, z.threshold = zscore, outlier.n = 0, n.perm = 5000, samp.group = NULL, 
-             col.list = col_vector, pch.list = NULL, label.H = FALSE, label.Z = FALSE, verbose = TRUE)
+             col.list = clist, pch.list = NULL, label.H = FALSE, label.Z = FALSE, verbose = TRUE)
 
 # Plot tree
 pdf(paste0(outfolder, "/", infile, "_Z", zscore, ".pdf"), width = 14, height = 7)
