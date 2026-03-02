@@ -39,8 +39,11 @@ crossentr <- crossentr[order(crossentr$K), ]
 outfile <- paste(getwd(), "K_vs_CrossEntropy.pdf", sep="/")
 pdf(outfile, width = 7, height = 7)
 
-# Define color-blind friendy color palette
+# Create color-blind palette colors for Females and Males using colors from the khroma package
+# Females (muted and oceanfive)
 clist <- c("#CC6677", "#332288", "#DDCC77", "#117733", "#88CCEE", "#882255", "#44AA99", "#999933", "#00A0B0", "#6A4A3C", "#CC333F", "#EB6841", "#EDC951")
+# Males (vibrant and highcontrast)
+# clist <- c("#EE7733", "#0077BB", "#EE3377", "#CC3311", "#009988", "#33BBEE", "#004488", "#DDAA33", "#BB5566", "#BBBBBB")
 
 # Plot
 # Plot lines
