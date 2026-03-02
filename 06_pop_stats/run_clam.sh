@@ -40,7 +40,6 @@ THREADS="ENTER_NUMBER_OF_THREADS"
 # ----------------------------------------------------------------------- #
 
 # Activate conda environment
-source ~/miniconda3/bin/activate
 conda activate clam
 
 # Move to working directory
