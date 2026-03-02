@@ -155,7 +155,6 @@ runlist <- readQ(
 )
 
 # Individual labels
-inds <- read.delim(file = labelfile, header = FALSE, stringsAsFactors = FALSE)
 runlist <- lapply(runlist, "rownames<-", inds$V1)
 
 # Define function "plot_run" to plot all ks for each run
