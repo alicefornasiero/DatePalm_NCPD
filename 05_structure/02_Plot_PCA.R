@@ -17,13 +17,12 @@ max_overlaps = 0
 # -------------------------------------------------------------------------------------------------- #
 
 # Install required packages
-# install.packages(c("tidyverse", "ggplot2", "ggrepel", "RColorBrewer"))
+# install.packages(c("tidyverse", "ggplot2", "ggrepel"))
 
 # Load required libraries
 library(tidyverse)
 library(ggplot2)
 library(ggrepel)
-library(RColorBrewer)
 
 # Change directory to working directory
 setwd(indir)
