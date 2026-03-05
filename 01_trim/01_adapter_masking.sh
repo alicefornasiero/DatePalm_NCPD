@@ -14,11 +14,11 @@
 # Make sure you update input and output folder path
 # FASTQ_FOLDER is the path to the folder containing the raw fastq files
 # PROJECT_FOLDER is the path to the project folder
-# SAMPLE_LIST is a text file with the list of sample names, one per line
+# SAMPLE_LIST is a text file with the list of sample prefix, one per line
 
 FASTQ_FOLDER="ENTER_INPUT_DIRECTORY_NAME_AND_PATH"
 PROJECT_FOLDER="ENTER_OUTPUT_DIRECTORY_NAME AND_PATH"
-SAMPLE_LIST="ENTER_SAMPLE_LIST_FILE_NAME_AND_PATH"
+SAMPLE_LIST="ENTER_FILE_NAME_AND_PATH"
 
 # Set variables for Illumina Truseq adapter sequence masking
 adapter1=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA
