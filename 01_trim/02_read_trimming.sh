@@ -11,11 +11,12 @@
 # Read trimming using Trimmomatic
 
 # ----------------------------------------------------------------------- #
-# Make sure you update input and output folder path
-# FASTQ_FOLDER is the path to the folder containing the raw fastq files and sample list
+# Make sure you update the project folder path
 # PROJECT_FOLDER is the path to the project folder
-FASTQ_FOLDER="ENTER_INPUT_DIRECTORY_PATH"
+# SAMPLE_LIST is a text file with the list of sample prefix, one per line
+
 PROJECT_FOLDER="ENTER_OUTPUT_DIRECTORY_PATH"
+SAMPLE_LIST="ENTER_FILE_NAME_AND_PATH"
 n_threads=32
 # ----------------------------------------------------------------------- #
 
@@ -27,7 +28,7 @@ module purge
 module load trimmomatic/0.39
 
 # Generate the array of slurms
-IFS=$'\n' read -d '' -r -a lines < ${FASTQ_FOLDER}/sample_id_list.txt
+IFS=$'\n' read -d '' -r -a lines < ${SAMPLE_LIST}
 ID=${lines[${SLURM_ARRAY_TASK_ID}]}
 
 # TRAILING Remove trailing low quality or N bases (Cut bases off the end of a read, if below quality 3)
