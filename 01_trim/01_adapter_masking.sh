@@ -25,8 +25,8 @@ n_cores=32
 
 # Generate a list of sample IDs using the names of the fastq.gz files in the initial data directory
 cd ${FASTQ_FOLDER}
-if [ -f "sample_list.txt" ]; then
-    rm sample_list.txt
+if [ -f "sample_id_list.txt" ]; then
+    rm sample_id_list.txt
 fi
 for fastq_file in *_R1.fastq.gz; do
         sample_id=$(basename "$fastq_file" _R1.fastq.gz);
