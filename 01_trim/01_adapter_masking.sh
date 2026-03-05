@@ -14,8 +14,11 @@
 # Make sure you update input and output folder path
 # FASTQ_FOLDER is the path to the folder containing the raw fastq files
 # PROJECT_FOLDER is the path to the project folder
+# SAMPLE_LIST is a text file with the list of sample names, one per line
+
 FASTQ_FOLDER="ENTER_INPUT_DIRECTORY_NAME_AND_PATH"
 PROJECT_FOLDER="ENTER_OUTPUT_DIRECTORY_NAME AND_PATH"
+SAMPLE_LIST="ENTER_SAMPLE_LIST_FILE_NAME_AND_PATH"
 
 # Set variables for Illumina Truseq adapter sequence masking
 adapter1=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA
@@ -23,19 +26,9 @@ adapter2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
 n_cores=32
 # ----------------------------------------------------------------------- #
 
-# Generate a list of sample IDs using the names of the fastq.gz files in the initial data directory
-cd ${FASTQ_FOLDER}
-if [ -f "sample_id_list.txt" ]; then
-    rm sample_id_list.txt
-fi
-for fastq_file in *_R1.fastq.gz; do
-        sample_id=$(basename "$fastq_file" _R1.fastq.gz);
-done >> sample_id_list.txt
-
 # Create output directory and subdirectories
 TRIM_DIR="${PROJECT_FOLDER}/01_trim"
 LOG_DIR="${PROJECT_FOLDER}/01_trim/logs"
-mkdir -p ${TRIM_DIR}
 mkdir -p ${LOG_DIR}
 
 # Change directory to trimming directory
@@ -46,7 +39,7 @@ module purge
 module load cutadapt/4.3
 
 # Generate the array of slurms
-IFS=$'\n' read -d '' -r -a lines < ${FASTQ_FOLDER}/sample_id_list.txt
+IFS=$'\n' read -d '' -r -a lines < ${SAMPLE_LIST}
 ID=${lines[${SLURM_ARRAY_TASK_ID}]}
 
 # Launch Cutadapt
