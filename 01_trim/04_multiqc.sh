@@ -2,7 +2,7 @@
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
 #SBATCH --partition=batch
-#SBATCH -J multiqcraw
+#SBATCH -J multiqc
 #SBATCH -e multiqc.%J.log
 #SBATCH -o multiqc.%J.out
 #SBATCH --time=2:00:00
@@ -13,6 +13,7 @@
 # ----------------------------------------------------------------------- #
 # Make sure you update input folder path
 # PROJECT_FOLDER is the path to the project folder
+
 PROJECT_FOLDER="ENTER_OUTPUT_DIRECTORY_PATH"
 # ----------------------------------------------------------------------- #
 
