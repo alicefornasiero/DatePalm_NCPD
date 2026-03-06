@@ -12,11 +12,13 @@
 
 # ----------------------------------------------------------------------- #
 # Make sure you update input and output folder path
-# FASTQ_FOLDER is the path to the folder containing the raw fastq files and sample list
 # PROJECT_FOLDER is the path to the project folder
-FASTQ_FOLDER="ENTER_INPUT_DIRECTORY_PATH"
+# SAMPLE_LIST is a text file with the list of sample names, one per line
+# THREADS is the number of threads for parallel processing
+
 PROJECT_FOLDER="ENTER_OUTPUT_DIRECTORY_PATH"
-n_threads=8
+SAMPLE_LIST="ENTER_FILE_NAME_AND_PATH"
+THREADS=8
 # ----------------------------------------------------------------------- #
 
 # Create output directory and subdirectories
@@ -27,11 +29,11 @@ mkdir -p ${QC_DIR}
 module purge
 module load fastqc/0.12.0
 
-IFS=$'\n' read -d '' -r -a lines < ${FASTQ_FOLDER}/sample_id_list.txt
+IFS=$'\n' read -d '' -r -a lines < ${SAMPLE_LIST}
 ID=${lines[${SLURM_ARRAY_TASK_ID}]}
 
 # Control the quality of the raw reads with FastQC
-fastqc -t 8 \
+fastqc -t ${THREADS} \
 -o ${QC_DIR} \
 ${PROJECT_FOLDER}/01_trim/${ID}_clean_1.fq.gz \
 ${PROJECT_FOLDER}/01_trim/${ID}_clean_2.fq.gz
