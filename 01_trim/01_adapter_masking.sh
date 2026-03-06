@@ -5,8 +5,8 @@
 #SBATCH --job-name cutadap
 #SBATCH -o cutadap.%J.out
 #SBATCH -e cutadap.%J.err
-#SBATCH --time=20:00:00
-#SBATCH --mem=20G
+#SBATCH --time=10:00:00
+#SBATCH --mem=10G
 
 # Adapter masking using Cutadapt
 
