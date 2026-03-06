@@ -6,7 +6,7 @@
 #SBATCH -o trim.%J.out
 #SBATCH -e trim.%J.err
 #SBATCH --time=20:00:00
-#SBATCH --mem=20G
+#SBATCH --mem=10G
 
 # Read trimming using Trimmomatic
 
