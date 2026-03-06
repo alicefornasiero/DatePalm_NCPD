@@ -5,8 +5,8 @@
 #SBATCH --job-name trim_fastqc
 #SBATCH -o trim_fastqc.%J.out
 #SBATCH -e trim_fastqc.%J.err
-#SBATCH --time=20:00:00
-#SBATCH --mem=20G
+#SBATCH --time=02:00:00
+#SBATCH --mem=10G
 
 # Run fastQC on trimmed reads
 
