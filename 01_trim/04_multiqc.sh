@@ -21,6 +21,9 @@ PROJECT_FOLDER="ENTER_OUTPUT_DIRECTORY_PATH"
 module purge
 module load multiqc/1.14
 
+# Change dir to working directory
+cd ${PROJECT_FOLDER}
+
 # Run multiqc
-multiqc ${PROJECT_FOLDER}/02_trimming_qc \
+multiqc 02_trimming_qc \
 --force
