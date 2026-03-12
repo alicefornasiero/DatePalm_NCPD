@@ -11,17 +11,17 @@
 # Get IBS0, IBS1, IBS2 and IBS2* counts, and mean and standard deviation IBS values
 
 # ----------------------------------------------------------------------- #
-infile - path and file name of vcf.gz input file (including extension)
-outdir - path to output folder
-snpduopath - path to the folder where you installed SNPDuo program
+INFILE - Path and file name of vcf input file (can be gzipped)
+OUTDIR - Path to output folder
+SNPDUOPATH - Path to the folder where you installed SNPDuo program
 
-infile=/path/to/vcf_input_file.vcf.gz
-outdir=/path/to/output/dir
-snpduopath=/path/to/snpduo
+INFILE="ENTER_PATH_AND_VCF_FILE_NAME"
+OUTDIR="ENTER_OUTPUT_DIRECTORY_PATH"
+SNPDUOPATH="ENTER_PATH_TO_SNPDUO_EXECUTABLE"
 # ----------------------------------------------------------------------- #
 
 # Clone git repositiory for SNPDuo
-# cd $snpduopath
+# cd $SNPDUOPATH
 # git clone https://github.com/RobersonLab/snpduo.git
 # Install the program
 # cd snpduo
@@ -31,29 +31,29 @@ snpduopath=/path/to/snpduo
 module load vcftools/0.1.17
 
 # Change to working directory
-cd $outdir
+cd $OUTDIR
 
 # Define output prefix
-outprefix=$(basename $infile .vcf.gz)
+OUTPREFIX=$(basename $INFILE .vcf.gz)
 
 # Run vcftools to generate .tped and .tfam files as input for SNPduo
-vcftools --gzvcf $infile \
+vcftools --gzvcf $INFILE \
 --plink-tped \
---out ${outprefix}
+--out ${OUTPREFIX}
 
 # If chromosome names contain characters (e.g. chr01), the vcftools command will convert them into 0 in the first column of the .tped file
 # The second column of the .tped file contains chr:pos info (e.g. chr01:100).
 # Modify the .tped file to get chromosome names in the first column by splitting the second column into the originary chr and position columns
-sed 's/:/\t/g' ${outprefix}.tped | awk '{FS=OFS="\t"} {$1=""; sub(FS, ""); print}' >  ${outprefix}_tmp.tped
+sed 's/:/\t/g' ${OUTPREFIX}.tped | awk '{FS=OFS="\t"} {$1=""; sub(FS, ""); print}' >  ${OUTPREFIX}_tmp.tped
 
-mv ${outprefix}_tmp.tped ${outprefix}.tped
+mv ${OUTPREFIX}_tmp.tped ${OUTPREFIX}.tped
 
 # Chromosome names have to be numbers only. Remove any character (e.g. "chr", "Chr", ...)
-sed -i 's/Chr0//g' ${outprefix}.tped
-sed -i 's/Chr//g' ${outprefix}.tped
+sed -i 's/Chr0//g' ${OUTPREFIX}.tped
+sed -i 's/Chr//g' ${OUTPREFIX}.tped
 
 # Get IBS counts and summary information. Inputs are data.tfam and data.tped. Output files are .count and .summary
-${snpduopath}/snpduo --tfile ${outprefix} \
+${SNPDUOPATH}/snpduo --tfile ${OUTPREFIX} \
 --counts \
 --summary \
---out ${outprefix}_IBS
+--out ${OUTPREFIX}_IBS
