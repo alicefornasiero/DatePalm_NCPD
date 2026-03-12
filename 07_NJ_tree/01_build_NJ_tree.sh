@@ -14,23 +14,23 @@
 # VCF - Path and file name of the input multi-sample vcf file
 # OUTDIR - Path to otput folder
 # VCF2DIS - Path to VCF2Dis program executable
-# LABELFILE - Path and file name of sample name labels
 # OUTPREFIX - Prefix of the output files
+# RUNLIST - Text file containing a numeric list (one per line) to perform bootstrap on N total runs
 # RAND - Fraction (0-1] of sites to be randomly included in the calculation of genetic distance
 
 VCF="ENTER_INPUT_VCF_FILE"
 OUTDIR="ENTER_OUTPUT_FOLDER_PATH"
 VCF2DIS="ENTER_PATH_TO_VCF2DIS_EXE"
-LABELFILE="ENTER_PATH_AND_FILE_NAME_OF_SAMPLE_LABELS"
 OUTPREFIX="ENTER_OUTPUT_PRPEFIX"
+RUNLIST="ENTER_PATH_AND_FILE_NAME"
 RAND="ENTER_FRACTION"
 # ----------------------------------------------------------------------- #
 
 # Activate conda env for phylipnew software from EMBOSS
 conda activate phylip
 
-# Generate an array to launch the SNP filtering on the chromosomes simultaneously
-IFS=$'\n' read -d '' -r -a lines < ${OUTDIR}/run.list
+# Generate an array to launch VCF2Dis simultaneously X times
+IFS=$'\n' read -d '' -r -a lines < ${RUNLIST}
 X=${lines[${SLURM_ARRAY_TASK_ID}]}
 # Generate an odd seed with shuf. Start at 1, end at 32767, pick 1 number, increment by 2
 SEED=$(( (RANDOM % 32767) | 1 ))
