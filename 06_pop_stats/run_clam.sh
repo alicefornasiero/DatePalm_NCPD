@@ -17,11 +17,11 @@
 # MIN_GQ - Minimum genotype quality to count depth (for GVCF input only)
 # CHR_TO_EXCLUDE - Comma-seaparated list of chromosomes to be excluded
 # WIN_SIZE - Size of the window in bp
-# SAMPLE_FILE - Path to TSV file containing the list of samples and gVCF files (header is required)
-  # Samples are listed one per line, columns are tab separated: sample name, respective gVCF file path and file name, and a string defining the population
+# SAMPLE_FILE - Path to TSV file containing the list of sample names and corresponding gVCF files (header is required)
+  # Samples are listed one per line, fields are tab separated: sample name, corresponding gVCF file (sample name and sample file name must correspond), and a string defining the population (e.g. pop1)
   # Header line (tab seaparated): sample_name, file_path, population
-# POP_FILE - Path to TSV file containing the list of samples and the respective population (no header)
-  # Samples are listed one per line, columns are tab separated: sample name, a string defining the population
+# POP_FILE - Path to TSV file containing the list of sample names and the corresponding populations (no header required)
+  # Samples are listed one per line, fields are tab separated: sample name, a string defining the population (e.g. pop1)
 # VCF_FILE - Path to to input multi-sample vcf file with filtered snps used in the calculation of pop stats
 # OUTPREFIX - prefix for the output .zarr archive containing the callable sites
 # THREADS - Number of threads
