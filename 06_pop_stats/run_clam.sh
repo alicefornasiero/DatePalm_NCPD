@@ -70,7 +70,5 @@ clam stat \
   ${VCF_FILE}
 
 # sort output files
-sort -V pops/heterozygosity.tsv > pops/heterozygosity_sorted.tsv
-sort -V pops/pi.tsv > pops/pi_sorted.tsv
-sort -V pops/fst.tsv > pops/fst_sorted.tsv
-sort -V pops/dxy.tsv > pops/dxy_sorted.tsv
+tail -n+2 heterozygosity.tsv | sort -V | cut -f 1,2,3,5,6,7,8 > heterozygosity_sorted.tsv
+tail -n+2 pi.tsv | sort -V > pi_sorted.tsv
