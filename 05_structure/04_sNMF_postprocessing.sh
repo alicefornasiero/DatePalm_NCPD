@@ -18,18 +18,18 @@ PROJECT_FOLDER="ENTER_OUTPUT_DIRECTORY_PATH"
 # Change directory to the directory containing sNMF output files
 cd ${PROJECT_FOLDER}/06_structure/pop_structure
 
-# Define which run had the least entropy and the number of ancestral populations, K
+# Define which run had the lowest cross entropy and the number of ancestral populations, K
 min_entropy=$(grep "Cross-Entropy (masked data):" crossEntropy_run*_K*.log | cut -f2 | sort | head -n1)
 myfile=$(grep ${min_entropy} crossEntropy_run*_K*.log | cut -d: -f1)
 myrun=$(basename ${myfile} | cut -d "_" -f2)
-echo -e 'K\tCross_Entropy' >K_vs_CrossEntropy.txt
 
+# Write it to a file
 for mylist in $(ls crossEntropy_${myrun}_K*.log);
 do
     myK=$(basename $(basename ${mylist} | cut -d"K" -f2) .log);
     myvalue=$(grep "Cross-Entropy (masked data):" ${mylist} | cut -f2);
-    echo -e ${myK}'\t'${myvalue} >>K_vs_CrossEntropy.txt;
-done
+    printf "%s\t%s\n" "$myK" "$myvalue";
+done | sort -V > K_vs_CrossEntropy.txt
 
 myK=$(grep ${min_entropy} K_vs_CrossEntropy.txt | cut -d" " -f1)
 echo "The number of ancestral populations (K) is" ${myK}
@@ -37,3 +37,12 @@ myrun_number=${myrun/"run"/""}
 echo "The run with the least cross-entropy is " ${myrun_number}
 
 grep "Cross-Entropy (masked data):" crossEntropy_run${myrun_number}_K*.log
+
+# Write a file with the cross entropy values of all runs
+for i in crossEntropy_run*.log;
+do
+    myK=$(echo $i | cut -d"_" -f3 | cut -d"." -f1);
+    myrun=$(basename ${i} | cut -d "_" -f2)
+    myvalue=$(grep "Cross-Entropy (masked data):" $i | cut -f2);
+    printf "%s\t%s\t%s\n" "$myK" "$myvalue" "$myrun";
+done > all_K_vs_CrossEntropy.txt
