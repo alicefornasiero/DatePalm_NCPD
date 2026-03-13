@@ -21,57 +21,51 @@ tot_k = 4
 # ---------------------------------------------------------------------------------------------- #
 
 # Install required packages
-# install.packages(c("pophelper", "gridExtra"))
+# install.packages(c("pophelper", "gridExtra", "ggplot2"))
 
 # Load required libraries
 library(pophelper)
 library(gridExtra)
-
-#-----------------------------------#
-# 1. K-plot of Cross Entropy values #
-#-----------------------------------#
-
-# Read cross-entropy txt file and order lines numerically
-crossentr <- read.table("K_vs_CrossEntropy.txt", header = TRUE, stringsAsFactors = FALSE)
-crossentr <- crossentr[order(crossentr$K), ]
-
-# Generate output file name and open pdf device
-outfile <- paste(getwd(), "K_vs_CrossEntropy.pdf", sep="/")
-pdf(outfile, width = 7, height = 7)
+library(ggplot2)
 
 # Create color-blind palette colors for Females and Males using colors from the khroma package
 # Females (muted and oceanfive)
 clist <- c("#CC6677", "#332288", "#DDCC77", "#117733", "#88CCEE", "#882255", "#44AA99", "#999933", "#00A0B0", "#6A4A3C", "#CC333F", "#EB6841", "#EDC951")
 # Males (vibrant and highcontrast)
 # clist <- c("#EE7733", "#0077BB", "#EE3377", "#CC3311", "#009988", "#33BBEE", "#004488", "#DDAA33", "#BB5566", "#BBBBBB")
+# Scree plot palette
+bluepal <- c("#F0F8FF", "#C1E0FF", "#92C9FF", "#64B2FF", "#359BFF", "#1A80F2", "#1460D8", "#0D40BE", "#0620A4", "#00008B")
 
-# Plot
-# Plot lines
-plot(crossentr$K, crossentr$Cross_Entropy, 
-     type = "lines", 
-     lwd = 2,
-     col = "blue", 
-     axes = FALSE, 
-     ann = FALSE)
-# Plot data points
-points(crossentr$K, crossentr$Cross_Entropy,
-       pch = 20, 
-       cex = 1.5, 
-       col = "blue")
-# Plot title, x- and y-axis labels
-title(xlab = "K, number of ancestral populations", 
-      ylab = "Min Cross-Entropy", 
-      cex.lab = 1.5)
-# Define x-axis parameters
-axis(side = 1, 
-     at = seq(1, tot_k, by = 1), 
-     labels = TRUE, cex.axis = 1.2)
-# Define y-axis parameters
-axis(side = 2, 
-     at = round(seq(min(crossentr$Cross_Entropy), max(crossentr$Cross_Entropy), by = 0.01), 2), 
-     cex.axis = 1.2)
+#-----------------------------------#
+# 1. K-plot of Cross Entropy values #
+#-----------------------------------#
 
-dev.off()
+# Read cross-entropy txt file
+crossentr <- read.table(crossentrfile, header = FALSE)
+colnames(crossentr) <- c("K", "value", "run")
+
+# Transfor K values into factors
+crossentr$K <- factor(crossentr$K, levels = gtools::mixedsort(unique(crossentr$K)))
+
+# Generate output file name
+outfile <- paste(getwd(), "K_vs_CrossEntropy.pdf", sep="/")
+
+# Plot scree plot
+p_cross <- ggplot(crossentr, aes(x = as.numeric(K), y = value, color = run)) +
+             geom_point(size = 3, alpha = 0.7) +
+             geom_line(linewidth = 0.8, alpha = 0.7) +
+             scale_color_manual(name = "", values = bluepal) +
+             scale_x_continuous(name = "K, number of ancestral populations",
+                breaks = seq(1, tot_k)) +
+             scale_y_continuous(name = "Cross-Entropy",
+                breaks = round(seq(min(crossentr$value), max(crossentr$value), 0.02), 3)) +             
+             theme(axis.text = element_text(size = 12),
+               axis.title = element_text(size = 14),
+               panel.grid.minor = element_blank(),
+               legend.text = element_text(size = 12),
+               legend.title = element_text(size = 14))
+
+ggsave(outfile, p_cross, width = 7, height = 7)
 
 #------------------------------------#
 # 2. Barplot of population structure #
