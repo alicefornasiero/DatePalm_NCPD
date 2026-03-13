@@ -36,6 +36,9 @@ clist <- c("#CC6677", "#332288", "#DDCC77", "#117733", "#88CCEE", "#882255", "#4
 # Scree plot palette
 bluepal <- c("#F0F8FF", "#C1E0FF", "#92C9FF", "#64B2FF", "#359BFF", "#1A80F2", "#1460D8", "#0D40BE", "#0620A4", "#00008B")
 
+# Set working directory
+setwd(indir)
+
 #-----------------------------------#
 # 1. K-plot of Cross Entropy values #
 #-----------------------------------#
@@ -70,10 +73,6 @@ ggsave(outfile, p_cross, width = 7, height = 7)
 #------------------------------------#
 # 2. Barplot of population structure #
 #------------------------------------#
-
-# Check input directory
-setwd(indir)
-if (!dir.exists(indir)) stop("Input directory does not exist!")
 
 # Create the list of input files (Q files)
 sfiles <- list.files(path = indir, pattern = ".Q", full.names = TRUE)
