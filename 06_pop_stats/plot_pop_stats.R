@@ -51,7 +51,7 @@ plot_pi <- ggplot(pi_clean, aes(x = mid / 1000000, y = pi, color = population)) 
                                   max(pi_clean$start/1000000, na.rm = TRUE), 5),0)) +
              scale_y_continuous(expand = c(0, NA)) +
              scale_color_manual(values = clist) +
-             labs(x = "Position (Mbp)", y = expression(pi), color = "Population") +
+             labs(x = "Position (Mbp)", y = expression(pi)) +
              theme_minimal() +
              theme(axis.text = element_text(size = 7),
                axis.title = element_text(size = 12),
