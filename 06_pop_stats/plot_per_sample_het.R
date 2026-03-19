@@ -5,17 +5,17 @@
 #--------------------------------------------------------------------#
 
 # Input files and variables
-# ------------------------------------------------------------------------------------------------------------ #
-# indir - Path to directory containing the heterozygosity_sorted.tsv file as output of clam analysis
+# ----------------------------------------------------------------------------------------------------- #
+# indir - Path to directory containing the per-sample heterozygosity_sorted.tsv file from clam analysis
 # pop_file - Tab separated file with two columns: sample name, population (header required)
 # plot_title - Title text for the output plot
 # win_size - Window size in bp used in clam analysis
 
-indir = "path/to/clam/output/directory"
+indir = "path/to/clam/per_sample/output/directory"
 groupfile = "/path/to/text_file"
 plot_title = "Plot title"
 win_size = 100000
-# ----------------------------------------------------------------------------------------------------------- #
+# ---------------------------------------------------------------------------------------------------- #
 
 # Install required packages
 # install.packages(c("tidyverse", "ggplot2", "forcats"))
