@@ -10,7 +10,7 @@
 # inprefix - Prefix name of the .eigenval and .eigenvec input files from Plink
 # groupfile - Tab separated file with two columns: sample name, population (header required)
 # max_overlaps - Numeric value. Exclude text labels when they overlap more than max_overlap text 
-#                labels or data points. Default: 10. No label printed: 0
+#                labels or data points. No label printed: 0
 
 indir = "/path/to/input/directory/with/eigenvalues/and/eigenvectors"
 inprefix = "input_file_prefix"
