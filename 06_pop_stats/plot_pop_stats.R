@@ -4,13 +4,13 @@
 #------------------------------------------------------------#
 
 # Input files and variables
-# ---------------------------------------------- #
-# indir - Path to the input directory containing pi statistics obtained with clam
+# ---------------------------------------------------------------------- #
+# indir - Path to directory containing per-population pi statistics obtained with clam
 # plot_title - Title text for the output plot
 
-indir = "/path/to/folder/containing/clam/pop_gen_stats"
+indir = "/path/to/folder/containing/clam/pi/in/populations"
 plot_title = "Plot Title"
-# ---------------------------------------------- #
+# ---------------------------------------------------------------------- #
 
 # Install required packages
 # install.packages(c("ggplot2", "tidyverse", "forcats"))
@@ -40,7 +40,7 @@ pi_clean$mid <- pi_clean$start + (pi_clean$end - pi_clean$start)/2
 # Females
 clist <- c("pop1" = "#CC6677", "pop2" = "#332288", "pop3" = "#DDCC77", "pop4" = "#117733")
 # Males
-clist <- c("pop1" = "#EE7733", "pop2" = "#0077BB", "pop3" = "#EE3377")
+# clist <- c("pop1" = "#EE7733", "pop2" = "#0077BB", "pop3" = "#EE3377")
 
 # Plot pi by population along the chromosomes
 plot_pi <- ggplot(pi_clean, aes(x = mid / 1000000, y = pi, color = population)) +
