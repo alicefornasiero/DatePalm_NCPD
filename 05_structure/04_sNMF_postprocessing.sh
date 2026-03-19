@@ -6,7 +6,6 @@
 #SBATCH --job-name postsNMF
 #SBATCH -o postsNMF.%J.out
 #SBATCH -e postsNMF.%J.err
-#SBATCH --mem=1G
 
 # You have previously run sNMF (see script 03_Run_sNMF.sh) and obtained the Q matrices for each run and each K.
 
