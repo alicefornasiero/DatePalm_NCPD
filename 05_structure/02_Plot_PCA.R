@@ -75,7 +75,7 @@ pca_plot12 <- ggplot(pca, aes(PC1, PC2, fill = pop)) +
                 min.segment.length = 0.2,
                 seed = 42, box.padding = 0.2,
                 xlim = c(-Inf, Inf), ylim = c(-Inf, Inf),
-                max.overlaps = 100, size = 1) +
+                max.overlaps = max_overlaps, size = 1) +
               geom_vline(aes(xintercept = 0), linetype = "dashed", linewidth = 0.5) +
               geom_hline(aes(yintercept = 0), linetype = "dashed", linewidth = 0.5) +
               scale_x_continuous(name = paste0("PC1 (", signif(pve$pve[1], 3), "%)"),
@@ -99,7 +99,7 @@ pca_plot13 <- ggplot(pca, aes(PC1, PC3, fill = pop)) +
                 min.segment.length = 0.2,
                 seed = 42, box.padding = 0.2,
                 xlim = c(-Inf, Inf), ylim = c(-Inf, Inf),
-                max.overlaps = 100, size = 1) +
+                max.overlaps = max_overlaps, size = 1) +
               geom_vline(aes(xintercept = 0), linetype = "dashed", linewidth = 0.5) +
               geom_hline(aes(yintercept = 0), linetype = "dashed", linewidth = 0.5) +
               scale_x_continuous(name = paste0("PC1 (", signif(pve$pve[1], 3), "%)"),
@@ -123,7 +123,7 @@ pca_plot23 <- ggplot(pca, aes(PC2, PC3, fill = pop)) +
                 min.segment.length = 0.2,
                 seed = 42, box.padding = 0.2,
                 xlim = c(-Inf, Inf), ylim = c(-Inf, Inf),
-                max.overlaps = 100, size = 1) +
+                max.overlaps = max_overlaps, size = 1) +
               geom_vline(aes(xintercept = 0), linetype = "dashed", linewidth = 0.5) +
               geom_hline(aes(yintercept = 0), linetype = "dashed", linewidth = 0.5) +
               scale_x_continuous(name = paste0("PC2 (", signif(pve$pve[2], 3), "%)"),
