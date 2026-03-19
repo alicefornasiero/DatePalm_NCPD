@@ -6,11 +6,9 @@
 # Input files and variables
 # ---------------------------------------------- #
 # indir - Path to the input directory containing pi statistics obtained with clam
-# pi_in - File name of pi statistics computed with clam
 # plot_title - Title text for the output plot
 
 indir = "/path/to/folder/containing/clam/pop_gen_stats"
-pi_in = "pi_sorted.tsv"
 plot_title = "Plot Title"
 # ---------------------------------------------- #
 
@@ -26,23 +24,23 @@ library(forcats)
 setwd(indir)
 
 # Read input files
-pi <- read_table(pi_in, col_names = c("chrom","start","end","population","pi","comparisons","differences"))
+pi <- read_table("pi_sorted.tsv", col_names = c("chrom","start","end","population","pi","comparisons","differences"))
 
 # Remove lines with NA values
 pi_clean <- pi[complete.cases(pi), ]
 
 # Define output file names
-pi_out_chr <- paste0(indir, "/", sub(".tsv", "_chromosomes.pdf", pi_in))
-pi_out_box <- paste0(indir, "/", sub(".tsv", "_boxplot.pdf", pi_in))
+pi_out_chr <- paste0(indir, "/", sub(".tsv", "_chromosomes.pdf", "pi_sorted.tsv"))
+pi_out_box <- paste0(indir, "/", sub(".tsv", "_boxplot.pdf", "pi_sorted.tsv"))
 
 # Calculate midpoint for each window
 pi_clean$mid <- pi_clean$start + (pi_clean$end - pi_clean$start)/2
 
-# Create color-blind palette colors for Females and Males using colors from the khroma package
-# Females (muted and oceanfive)
-clist <- c("#CC6677", "#332288", "#DDCC77", "#117733", "#88CCEE", "#882255", "#44AA99", "#999933", "#00A0B0", "#6A4A3C", "#CC333F", "#EB6841", "#EDC951")
-# Males (vibrant and highcontrast)
-# clist <- c("#EE7733", "#0077BB", "#EE3377", "#CC3311", "#009988", "#33BBEE", "#004488", "#DDAA33", "#BB5566", "#BBBBBB")
+# Create color palette according to results of population structure analysis
+# Females
+clist <- c("pop1" = "#CC6677", "pop2" = "#332288", "pop3" = "#DDCC77", "pop4" = "#117733")
+# Males
+clist <- c("pop1" = "#EE7733", "pop2" = "#0077BB", "pop3" = "#EE3377")
 
 # Plot pi by population along the chromosomes
 plot_pi <- ggplot(pi_clean, aes(x = mid / 1000000, y = pi, color = population)) +
@@ -66,12 +64,12 @@ plot_pi <- ggplot(pi_clean, aes(x = mid / 1000000, y = pi, color = population)) 
                panel.grid.major = element_line(linewidth = 0.2),
                panel.grid.minor = element_blank(),
                legend.key.size= unit(1.5, 'cm'))
-
 ggsave(pi_out_chr, plot_pi, width = 8, height = 12)
 
 # Plot pi by population as a boxplot
 plot_pi_box <- pi_clean %>%
-        mutate(population = fct_reorder(population, pi, .fun = 'median')) %>%
+        mutate(population = fct_relevel(population, "pop1", "pop2", "pop3", "pop4") %>% 
+          fct_drop()) %>%
         ggplot( aes(x = as.factor(population), y = pi, fill = population)) +
           geom_boxplot(width = 0.3, alpha = 0.5) +
           scale_y_continuous(breaks = round(seq(min(pi_clean$pi, na.rm = TRUE), 
@@ -83,5 +81,4 @@ plot_pi_box <- pi_clean %>%
             axis.title = element_text(size = 14),
             legend.position = "none"
                )
-
 ggsave(pi_out_box, plot_pi_box, width = 5, height = 7)
