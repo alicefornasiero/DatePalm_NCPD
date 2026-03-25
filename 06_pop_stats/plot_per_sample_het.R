@@ -30,7 +30,8 @@ setwd(indir)
 
 # Read input files
 het <- read_table("heterozygosity_sorted.tsv", col_names = c("chrom","start","end","sample","het_total","callable_total","heterozygosity"))
-pop <- read_table(groupfile, col_names = c("sample", "final_label", "pop"))
+pop <- read_table(groupfile, col_names = TRUE)
+colnames(pops) <- c("sample", "pops")
 
 # Define output file names
 het_out_box <- paste0(indir, "/", sub(".tsv", "_boxplot.pdf", "heterozygosity_sorted.tsv"))
