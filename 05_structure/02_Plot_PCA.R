@@ -52,7 +52,7 @@ clist <- c("pop1" = "#CC6677", "pop2" = "#332288", "pop3" = "#DDCC77", "pop4" = 
 # Subpopulation in the male accessions
 # clist <- c("pop1" = "#EE7733", "pop2" = "#0077BB", "pop3" = "#EE3377", "admix" = "#BBBBBB")
 # Haplotypes in the SDR region
-clist <- c("hap1" = "#2121D9", "hap2" = "#9999FF", "hap3" = "#DF0101", "nd" = "#BBBBBB")
+# clist <- c("hap1" = "#2121D9", "hap2" = "#9999FF", "hap3" = "#DF0101", "nd" = "#BBBBBB")
 
 # Plot scree plot
 outscree <- paste0(indir, "/", inprefix, "_screeplot.pdf")
