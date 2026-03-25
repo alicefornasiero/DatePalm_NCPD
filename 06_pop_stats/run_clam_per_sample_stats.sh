@@ -11,7 +11,7 @@
 # Run clam software to calculate heterozigosity and pi in each sample using gVCF files as input
 
 # ----------------------------------------------------------------------- #
-# PROJECT_FOLDER - Path to project folder where per-sample g.vcf files were generated
+# PROJECT_FOLDER - Path to project folder where per-sample g.vcf files were generated (/path/to/04_snpcall/gVCF)
 # OUTFOLDER - Path to output folder where to write heterozigosity and pi stats
 # MIN_MEAN_DP - Minimum mean depth across samples (it is not a cumulative value)
 # MAX_MEAN_DP - Maximum mean depth across samples (it is not a cumulative value)
@@ -44,7 +44,7 @@ cd $PROJECT_FOLDER
 mkdir -p ${OUTFOLDER}/per_sample
 
 # Generate the list of gVCF files to build the Zarr store with individual depth values
-for per_sample_gvcf in ${PROJECT_FOLDER}/04_snpcall/gVCF/*.g.vcf.gz; do GVCF_LIST+="${per_sample_gvcf} "; done
+for per_sample_gvcf in *.g.vcf.gz; do GVCF_LIST+="${per_sample_gvcf} "; done
 
 # Run clam collect to collect depth from single-sample gVCF files and store it into a Zarr store
 clam collect \
@@ -61,14 +61,14 @@ clam loci \
 --min-gq ${MIN_GQ} \
 --exclude-file ${CHR_TO_EXCLUDE} \
 --threads ${THREADS} \
---output ${OUTPREFIX}_callable.zarr \
+--output ${OUTFOLDER}/per_sample/${OUTPREFIX}_callable.zarr \
 --per-sample \
 ${OUTPREFIX}_depth.zarr
 
 # Calculate population genetic statistics from the filtered VCF for each sample separately
 clam stat \
---OUTFOLDER ${OUTFOLDER}/per_sample \
---callable ${OUTPREFIX}_callable.zarr \
+--outdir ${OUTFOLDER}/per_sample \
+--callable ${OUTFOLDER}/per_sample/${OUTPREFIX}_callable.zarr \
 --window-size ${WIN_SIZE} \
 --exclude-file ${CHR_TO_EXCLUDE} \
 --threads ${THREADS} \
