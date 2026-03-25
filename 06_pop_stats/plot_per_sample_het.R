@@ -7,7 +7,7 @@
 # Input files and variables
 # ----------------------------------------------------------------------------------------------------- #
 # indir - Path to directory containing the per-sample heterozygosity_sorted.tsv file from clam analysis
-# pop_file - Tab separated file with two columns: sample name, population (header required)
+# groupfile - Tab separated file with two columns: sample name, population (header required)
 # plot_title - Title text for the output plot
 # win_size - Window size in bp used in clam analysis
 
