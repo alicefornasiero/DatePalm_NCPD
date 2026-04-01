@@ -16,12 +16,11 @@ outprefix = "prefix_of_output_file"
 # -------------------------------------------------------------------------------------------------- #
 
 # Install required packages
-# install.packages(c("ggplot2", "readr", "dyplr"))
+# install.packages(c("ggplot2", "readr"))
 
 # Load libraries
 library(ggplot2)
 library(readr)
-library(dyplr)
 
 # Set output folder
 setwd(indir)
