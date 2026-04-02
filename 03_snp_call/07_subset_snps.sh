@@ -31,7 +31,7 @@ module load bcftools/1.16
 cd ${PROJECT_FOLDER}/05_filtering
 
 # GATK SelectVariants to random sample genotypes (--select-random-fraction: number between 0 and 1 specifying the fraction of total variants to be randomly selected from the input callset.)
-gatk --java-options "-Djava.io.tmpdir=tmp -Xmx90G" SelectVariants \
+gatk --java-options "-Djava.io.tmpdir=tmp -Xmx45G" SelectVariants \
 -V ${VCF_PREFIX}_filt_noSDR_noclones_noprivall.vcf.gz \
 --select-random-fraction ${FRACTION} \
 --output ${VCF_PREFIX}_filt_noSDR_noclones_noprivall_subset.vcf.gz
