@@ -10,10 +10,10 @@ These scripts are designed to run on an HPC environment using **SLURM** workload
 
 | Tool | Version | Documentation |
 | :--- | :--- | :--- |
-| **BWA** | 0.7.17 | [Official Docs](https://github.com/lh3/bwa) |
-| **Samtools** | 1.16.1 | [Official Docs](http://www.htslib.org/doc/samtools.html) |
-| **Picard** | 3.0.0 | [Official Docs](https://broadinstitute.github.io/picard/) |
-| **deepTools** | 3.3.1 | [Official Docs](https://deeptools.readthedocs.io/) |
+| **BWA** | 0.7.17 | [link](https://github.com/lh3/bwa) |
+| **Samtools** | 1.16.1 | [link](http://www.htslib.org/doc/samtools.html) |
+| **Picard** | 3.0.0 | [link](https://broadinstitute.github.io/picard/) |
+| **deepTools** | 3.3.1 | [link](https://deeptools.readthedocs.io/) |
 
 ---
 
