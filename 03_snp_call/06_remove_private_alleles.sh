@@ -34,7 +34,7 @@ bcftools view -i 'COUNT(GT="het") > 1 || COUNT(GT="AA") > 1' ${VCF_PREFIX}.vcf.g
 --output-type z
 
 # Index file
-gatk --java-options "-Djava.io.tmpdir=tmp -Xmx90G" IndexFeatureFile \
+gatk --java-options "-Djava.io.tmpdir=tmp -Xmx45G" IndexFeatureFile \
    -I ${VCF_PREFIX}_noprivall.vcf.gz
 
 # Generate vcf statistics
