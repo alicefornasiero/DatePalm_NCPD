@@ -6,7 +6,7 @@
 #SBATCH -o align.%J.out
 #SBATCH -e align.%J.err
 #SBATCH --time=48:00:00
-#SBATCH --mem=150G
+#SBATCH --mem=50G
 
 # Read aligment using BWA mem
 
