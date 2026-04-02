@@ -6,13 +6,13 @@
 #SBATCH -o align_stats.%J.out
 #SBATCH -e align_stats.%J.err
 #SBATCH --time=20:00:00
-#SBATCH --mem=100G
+#SBATCH --mem=10G
 
 # Generate alignement statistics
 
 # ----------------------------------------------------------------------- #
-# FASTQ_FOLDER is the path to the folder containing the raw fastq files and the sample list
 # PROJECT_FOLDER is the path to the project folder
+# SAMPLE_LIST is a text file with the list of sample prefix, one per line
 # REFERENCE is the path to the reference genome in fasta format
 # JARFILE is the path and file name to the executable .jar file used by Picard's Tools
 # MEM_THREADS is the number of threads
@@ -20,8 +20,8 @@
 # MAXIS is the maximum library insert size in bp
 # HISTOGRAM_WIDTH is the maximum histogram width. When calculating mean and standard deviation, only bins <= HISTOGRAM_WIDTH will be included.
 
-FASTQ_FOLDER="ENTER_INPUT_DIRECTORY_PATH"
 PROJECT_FOLDER="ENTER_OUTPUT_DIRECTORY_PATH"
+SAMPLE_LIST="ENTER_FILE_NAME_AND_PATH"
 REFERENCE="ENTER_REFERENCE_PATH_AND_FILE_NAME"
 JARFILE="ENTER_JAR_PATH_AND_FILE_NAME"
 MEM_THREADS=32
@@ -40,14 +40,14 @@ module load picard/3.0.0
 module load deeptools/python2.7/3.3.1
 
 # Generate the array of slurms
-IFS=$'\n' read -d '' -r -a lines < ${FASTQ_FOLDER}/sample_id_list.txt
+IFS=$'\n' read -d '' -r -a lines < ${SAMPLE_LIST}
 ID=${lines[${SLURM_ARRAY_TASK_ID}]}
 
 # Flagstat
 samtools flagstat ${ID}_RG_clean_q${MINQ}_FM_markdup.bam > aln_stats/${ID}.q${MINQ}.flagsts.txt
 
 # Insert Size
-java -Xmx6g -Djava.io.tmpdir=tmp \
+java -Xmx8g -Djava.io.tmpdir=tmp \
 -jar ${JARFILE} CollectInsertSizeMetrics \
 --INPUT ${ID}_RG_clean_q${MINQ}_FM_markdup.bam \
 --OUTPUT aln_stats/${ID}.q${MINQ}.insert_size.txt \
@@ -60,7 +60,7 @@ java -Xmx6g -Djava.io.tmpdir=tmp \
 --HISTOGRAM_WIDTH ${HISTOGRAM_WIDTH}
 
 # Alignment Summary Metrics
-java -Xmx4g -Djava.io.tmpdir=tmp \
+java -Xmx8g -Djava.io.tmpdir=tmp \
 -jar ${JARFILE} CollectAlignmentSummaryMetrics \
 INPUT=${ID}_RG_clean_q${MINQ}_FM_markdup.bam \
 OUTPUT=aln_stats/${ID}.q${MINQ}.aln_summary.txt \
