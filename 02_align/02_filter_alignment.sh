@@ -6,20 +6,20 @@
 #SBATCH -o filter_align.%J.out
 #SBATCH -e filter_align.%J.err
 #SBATCH --time=48:00:00
-#SBATCH --mem=150G
+#SBATCH --mem=50G
 
 # Filter aligned reads
 
 # ----------------------------------------------------------------------- #
-# FASTQ_FOLDER is the path to the folder containing the raw fastq files and the sample list
 # PROJECT_FOLDER is the path to the project folder
+# SAMPLE_LIST is a text file with the list of sample prefix, one per line
 # REFERENCE is the path to the reference genome in fasta format
 # JARFILE is the path and file name to the executable .jar file used by Picard's Tools
 # MEM_THREADS is the number of threads
 # MINQ is the read mapping quality cutoff to filter out aligned reads with low mapping quality
 
-FASTQ_FOLDER="ENTER_INPUT_DIRECTORY_PATH"
 PROJECT_FOLDER="ENTER_OUTPUT_DIRECTORY_PATH"
+SAMPLE_LIST="ENTER_FILE_NAME_AND_PATH"
 REFERENCE="ENTER_REFERENCE_PATH_AND_FILE_NAME"
 JARFILE="ENTER_JAR_PATH_AND_FILE_NAME"
 MEM_THREADS=32
@@ -36,7 +36,7 @@ module load samtools/1.16.1
 module load picard/3.0.0
 
 # Generate the array of slurms
-IFS=$'\n' read -d '' -r -a lines < ${FASTQ_FOLDER}/sample_id_list.txt
+IFS=$'\n' read -d '' -r -a lines < ${SAMPLE_LIST}
 ID=${lines[${SLURM_ARRAY_TASK_ID}]}
 
 # Add Read Group
