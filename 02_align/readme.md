@@ -24,7 +24,9 @@ The pipeline expects trimmed reads from the previous preprocessing step, located
 * Format: `{SAMPLE_ID}_clean_1.fq.gz` and `{SAMPLE_ID}_clean_2.fq.gz`.
 
 ### 2. Reference Genome
-A high-quality reference genome in **FASTA** format. 
+A high-quality reference genome in **FASTA** format.
+
+The genome reference used in this work can be found here: [GCA_051530095.1](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_051530095.1/) 
 
 ### 3. Sample List
 A plain text file containing one sample prefix per line.
@@ -62,3 +64,34 @@ sbatch --array=0-9 filter_script.sh
 # Run after Step 2 completes
 sbatch --array=0-9 stats_script.sh
 ```
+
+## 📉 Workflow Details
+
+### 1. Alignment (01_align_reads.sh)
+Aligns reads using bwa mem. Outputs are automatically piped into samtools sort to produce coordinate-sorted BAM files.
+
+### 2. Filtering (02_filter_alignment.sh)
+
+A multi-step cleanup process to ensure data integrity:
+
+*AddOrReplaceReadGroups*: Assigns all the reads in a file to a single new read-group.
+
+*CleanSam*: Repairs soft-clipping beyond end-of-reference and sets MAPQ to 0 for unmapped reads.
+
+MAPQ Filter: Removes alignments with a mapping quality score lower than 30 (default).
+
+*FixMateInformation*: Synchronizes mate-pair data.
+
+*MarkDuplicatesWithMateCigar*: Identifies and removes PCR/optical duplicates to prevent biased variant calling.
+
+### 3. Statistics & QC (03_alignment_stats.sh)
+
+Generates metrics to evaluate alignment success:
+
+*samtools flagstat*: Quick summary of mapping statistics.
+
+*CollectInsertSizeMetrics*: Distribution of library fragment lengths.
+
+*CollectAlignmentSummaryMetrics*: Standard alignment metrics.
+
+*plotCoverage*: Assessment of sequencing depth and visualization.
