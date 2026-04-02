@@ -12,10 +12,10 @@ Ensure the following modules/tools are available:
 
 | Tool | Version | Documentation |
 | :--- | :--- | :--- |
-| **Cutadapt** | 4.3 | [Official Docs](https://cutadapt.readthedocs.io/) |
-| **Trimmomatic** | 0.39 | [Official Docs](http://www.usadellab.org/cms/?page=trimmomatic) |
-| **FastQC** | 0.12.0 | [Official Docs](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) |
-| **MultiQC** | 1.14 | [Official Docs](https://github.com/MultiQC/MultiQC) |
+| **Cutadapt** | 4.3 | [link](https://cutadapt.readthedocs.io/) |
+| **Trimmomatic** | 0.39 | [link](http://www.usadellab.org/cms/?page=trimmomatic) |
+| **FastQC** | 0.12.0 | [link](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) |
+| **MultiQC** | 1.14 | [link](https://github.com/MultiQC/MultiQC) |
 
 ---
 
