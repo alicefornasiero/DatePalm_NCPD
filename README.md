@@ -24,7 +24,8 @@ Additional files and figures related to the publication are deposited in Zenodo:
 ## Contacts
 
 For more details or to request materials, please contact the corresponding author:
-**Jesse Poland**: jesse.poland@kaust.edu.sa  
+
+- **Jesse Poland**: jesse.poland@kaust.edu.sa  
 
 ## Citation
 
