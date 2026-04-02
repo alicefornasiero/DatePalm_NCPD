@@ -54,15 +54,13 @@ Run the scripts sequentially. Ensure the `--array` index matches your sample lis
 
 ```bash
 # 1. Alignment (BWA mem + Samtools sort)
-sbatch --array=0-9 align_script.sh
+sbatch --array=0-9 01_align_reads.sh
 
 # 2. Filtering & Deduplication (Picard + Samtools)
-# Run after Step 1 completes
-sbatch --array=0-9 filter_script.sh
+sbatch --array=0-9 02_filter_alignment.sh
 
 # 3. Alignment Statistics (Picard + deepTools)
-# Run after Step 2 completes
-sbatch --array=0-9 stats_script.sh
+sbatch --array=0-9 03_alignment_stats.sh
 ```
 
 ## 📉 Workflow Details
