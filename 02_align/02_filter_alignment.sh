@@ -6,7 +6,7 @@
 #SBATCH -o filter_align.%J.out
 #SBATCH -e filter_align.%J.err
 #SBATCH --time=48:00:00
-#SBATCH --mem=50G
+#SBATCH --mem=20G
 
 # Filter aligned reads
 
