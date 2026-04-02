@@ -54,18 +54,18 @@ The scripts use SLURM Job Arrays to process samples in parallel. Launch them seq
 Ensure the --array range matches the number of lines in your `samples.txt` (starting from index 0).
 
 For example, if you have 10 samples:
-```Bash
+```bash
 # 1. Adapter Masking (Cutadapt)
-sbatch --array=0-9 cutadapt_script.sh
+sbatch --array=0-9 01_adapter_masking.sh
 
 # 2. Quality Trimming (Trimmomatic)
-sbatch --array=0-9 trimmomatic_script.sh
+sbatch --array=0-9 02_read_trimming.sh
 
 # 3. Quality Control (FastQC)
-sbatch --array=0-9 fastqc_script.sh
+sbatch --array=0-9 03_fastqc_trimmed.sh
 
 # 4. Summary Report (MultiQC) - Run once at the end
-sbatch multiqc_script.sh
+sbatch 04_multiqc.sh
 ```
 
 ## 📉 Workflow Details
