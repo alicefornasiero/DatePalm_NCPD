@@ -60,6 +60,7 @@ In each script, update the following variables in the **Required Parameters** se
 * `REFERENCE`: Path to your reference FASTA.
 * `VCF_PREFIX`: The prefix name for the output files.
 * `MINDP` / `MAXDP`: Site-level depth thresholds for SNP filtering.
+* `FRACTION`: Fraction of loci to be randomly subset [0-1].
 
 ### 2. Execution
 Run the scripts sequentially. Ensure the `--array` index matches your sample list (e.g., `0-9` for 10 samples).
@@ -78,9 +79,9 @@ sbatch 03_genotype_GVCF.sh
 sbatch 04_baseline_snp_filter.sh
 
 # 5. Post-Processing (Clones, Private Alleles, Subsetting)
-sbatch exclude_clones.sh
-sbatch remove_private_alleles.sh
-sbatch subset_snps.sh
+sbatch 05_exclude_clones.sh
+sbatch 06_remove_private_alleles.sh
+sbatch 07_subset_snps.sh
 ```
 
 ## 📉 Workflow Details
