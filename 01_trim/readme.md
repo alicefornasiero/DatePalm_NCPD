@@ -70,10 +70,18 @@ sbatch multiqc_script.sh
 
 ## 📉 Workflow Details
 
-*Cutadapt*: Masks Illumina TruSeq adapters and filters reads shorter than 50bp. It uses the --action=mask approach to maintain read length while masking adapter sequences.
+### 1. Cutadapt (01_adapter_masking.sh)
 
-*Trimmomatic*: Performs quality filtering using a sliding window (4bp, average quality > 20) and removes trailing bases below quality 3.
+Masks Illumina TruSeq adapters and filters reads shorter than 50bp. It uses the --action=mask approach to maintain read length while masking adapter sequences.
 
-*fastqc*: Generates individual quality reports for each clean sample in the 02_trimming_qc folder.
+### 2. Trimmomatic (02_read_trimming.sh)
 
-*multiqc*: Aggregates all FastQC results into a single, interactive HTML report found in the project root.
+Performs quality filtering using a sliding window (4bp, average quality > 20) and removes trailing bases below quality 3.
+
+### 3. FastQC (03_fastqc_trimmed.sh)
+
+Generates individual quality reports for each clean sample in the 02_trimming_qc folder.
+
+### 4. MultiQC (04_multiqc.sh)
+
+Aggregates all FastQC results into a single, interactive HTML report found in the project root.
