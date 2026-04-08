@@ -6,13 +6,13 @@
 
 # Input files and variables
 # -------------------------------------------------------------------------------------------------- #
-# indir - Path to input directory containing the .summary output file of SNPDuo
-# inprefix - Prefix name of the .summary input file from SNPDuo
-# outprefix - Prefix name of output file (IBS2het plot)
+# INDIR - Path to input directory containing the .summary output file of SNPDuo
+# INPREFIX - Prefix name of the .summary input file from SNPDuo
+# OUTPREFIX - Prefix name of output file (IBS2het plot)
 
-indir = "/path/to/input/directory"
-inprefix = "prefix_of_input_file"
-outprefix = "prefix_of_output_file"
+INDIR = "/path/to/input/directory"
+INPREFIX = "prefix_of_input_file"
+OUTPREFIX = "prefix_of_output_file"
 # -------------------------------------------------------------------------------------------------- #
 
 # Install required packages
@@ -23,10 +23,10 @@ library(ggplot2)
 library(readr)
 
 # Set output folder
-setwd(indir)
+setwd(INDIR)
 
 # Input is .summary file generated with SNPDuo
-sum_data <- read_csv(paste0(inprefix, ".summary"), col_names = TRUE)
+sum_data <- read_csv(paste0(INPREFIX, ".summary"), col_names = TRUE)
 colnames(sum_data) <- c("FID1", "IID1", "FID2", "IID2", "IBS0", "IBS1", "IBS2", "IBS2het", "Mean_IBS", "SD_IBS", "IBS2het_perc", "Informative_perc", "IBS2het_perc_Informative")
 
 # IBS2het plot: Percent Informative SNPs (y-axis) vs IBS2het ratio (x-axis)
@@ -37,7 +37,7 @@ sum_data$relation[sum_data$IBS2het_perc_Informative >= 0.95] <- "clone"
 df_layer_1 <- sum_data[sum_data$relation == "unknown" ,]
 df_layer_2 <- subset(sum_data, subset = relation %in% c("clone"))
 
-outIBS2het <- paste0(outprefix, "_infosnps_ibs2hetratio.pdf")
+outIBS2het <- paste0(OUTPREFIX, "_infosnps_ibs2hetratio.pdf")
 
 p_IBS2het <- ggplot() +
     geom_point(
