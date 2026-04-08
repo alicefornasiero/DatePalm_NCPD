@@ -11,10 +11,10 @@ These scripts are designed to run on an HPC environment using **SLURM** workload
 | Tool | Version | Documentation |
 | :--- | :--- | :--- |
 | **VCF2Dis** | 1.50 | [link](https://github.com/BGI-shenzhen/VCF2Dis) |
-| **fneighbor (EMBOSS)** | 3.69.650 | [link](https://emboss.sourceforge.net/apps/cvs/embassy/phylipnew/fneighbor.html) |
-| **fconsense (EMBOSS)** | 3.69.650 | [link](https://emboss.sourceforge.net/apps/cvs/embassy/phylipnew/fconsense.html) |
 | **EMBOSS** Conda installation | 6.6.0 | [link](https://anaconda.org/channels/bioconda/packages/emboss/overview) |
 | **Embassy** Conda installation | 3.69.650 | [link](https://anaconda.org/channels/bioconda/packages/embassy-phylip/overview) |
+| *fneighbor* (Embassy) | 3.69.650 | [link](https://emboss.sourceforge.net/apps/cvs/embassy/phylipnew/fneighbor.html) |
+| *fconsense* (Embassy) | 3.69.650 | [link](https://emboss.sourceforge.net/apps/cvs/embassy/phylipnew/fconsense.html) |
 
 ---
 
