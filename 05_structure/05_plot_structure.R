@@ -7,17 +7,17 @@
 
 # Input files and variables
 # ---------------------------------------------------------------------------------------------- #
-# indir - Path to the input directory containing the Q matrices obtained with sNMF analysis
-# outprefix - Prefix name of the output files
-# labelfile - File containing the sample names used in sNMF (one per line), in the same order
-# tot_run -  The total number of runs to be plotted
-# tot_k - The total number of Ks to be plotted
+# INDIR - Path to the input directory containing the Q matrices obtained with sNMF analysis
+# OUTPREFIX - Prefix name of the output files
+# LABEL_FILE - File containing the sample names used in sNMF (one per line), in the same order
+# TOT_RUN -  The total number of runs to be plotted
+# TOT_K - The total number of Ks to be plotted
 
-indir = "/path/to/input/directory/with/Q/matrices"
-outprefix = "output_file_prefix"
-labelfile = "original_sample_order_in_sNMF_analysis"
-tot_run = 10
-tot_k = 4
+INDIR = "/path/to/input/directory/with/Q/matrices"
+OUTPREFIX = "output_file_prefix"
+LABEL_FILE = "original_sample_order_in_sNMF_analysis"
+TOT_RUN = 10
+TOT_K = 4
 # ---------------------------------------------------------------------------------------------- #
 
 # Install required packages
@@ -37,7 +37,7 @@ clist <- c("#CC6677", "#332288", "#DDCC77", "#117733", "#88CCEE", "#882255", "#4
 bluepal <- c("#F0F8FF", "#C1E0FF", "#92C9FF", "#64B2FF", "#359BFF", "#1A80F2", "#1460D8", "#0D40BE", "#0620A4", "#00008B")
 
 # Set working directory
-setwd(indir)
+setwd(INDIR)
 
 #-----------------------------------#
 # 1. K-plot of Cross Entropy values #
@@ -59,7 +59,7 @@ p_cross <- ggplot(crossentr, aes(x = as.numeric(K), y = value, color = run)) +
              geom_line(linewidth = 0.8, alpha = 0.7) +
              scale_color_manual(name = "", values = bluepal) +
              scale_x_continuous(name = "K, number of ancestral populations",
-                breaks = seq(1, tot_k)) +
+                breaks = seq(1, TOT_K)) +
              scale_y_continuous(name = "Cross-Entropy",
                 breaks = round(seq(min(crossentr$value), max(crossentr$value), 0.02), 3)) +             
              theme(axis.text = element_text(size = 12),
@@ -75,13 +75,13 @@ ggsave(outfile, p_cross, width = 7, height = 7)
 #------------------------------------#
 
 # Create the list of input files (Q files)
-sfiles <- list.files(path = indir, pattern = ".Q", full.names = TRUE)
+sfiles <- list.files(path = INDIR, pattern = ".Q", full.names = TRUE)
 
 # Read input files
 slist <- readQ(files = sfiles, filetype = "basic")
 
 # Individual labels
-inds <- read.delim(file = labelfile, header = FALSE, stringsAsFactors = FALSE)
+inds <- read.delim(file = LABEL_FILE, header = FALSE, stringsAsFactors = FALSE)
 # add individual labels to all runs
 slist <- lapply(slist, "rownames<-", inds$V1)
 
@@ -96,7 +96,7 @@ slist <- lapply(slist, "rownames<-", inds$V1)
 # Labels are taken from the qlist when useindlab=T.
 
 # Define function "plot_k" to plot the same K result across all runs
-plot_k <- function(k_id = 2 : tot_k, slist, outprefix) {
+plot_k <- function(k_id = 2 : TOT_K, slist, OUTPREFIX) {
 
   # Indices for this run (e.g. 3 13 23 33 43 53 63 73 83 93)
   idx <- grep(paste0("_I\\.", k_id, "\\.Q$"), sfiles)
@@ -112,7 +112,7 @@ plot_k <- function(k_id = 2 : tot_k, slist, outprefix) {
     clustercol = clist,
 
     # Two-line strip panel label
-    splab = paste0("run", seq_len(tot_run), "\n", "K = ", k_id),
+    splab = paste0("run", seq_len(TOT_RUN), "\n", "K = ", k_id),
 
     # Individual labels
     showindlab = TRUE, useindlab = TRUE,
@@ -126,26 +126,26 @@ plot_k <- function(k_id = 2 : tot_k, slist, outprefix) {
     legendlab = paste0("group ", 1 : k_id),
 
     # Export
-    outputfilename = paste0(outprefix, "_K", k_id, "_allruns"),
+    outputfilename = paste0(OUTPREFIX, "_K", k_id, "_allruns"),
     imgtype = "pdf",
     height = 5, width = 30,
     exportpath = getwd()
   )
 }
 
-plot_each_k <- lapply(1 : tot_run, 
+plot_each_k <- lapply(1 : TOT_RUN, 
                    plot_k,
                    slist = slist,
-                   outprefix = outprefix)
+                   outprefix = OUTPREFIX)
 
 #######
 # 2.2 # Plot barplots for the same run (across Ks)
 #######
 
-# Open Q matrix files from k=2 to tot_k
+# Open Q matrix files from k=2 to TOT_K
 runlist <- readQ(
-  files = unlist(lapply(2 : tot_k, function(k)
-    list.files(path = indir, pattern = paste0(k, "\\.Q"), full.names = TRUE)
+  files = unlist(lapply(2 : TOT_K, function(k)
+    list.files(path = INDIR, pattern = paste0(k, "\\.Q"), full.names = TRUE)
   )),
   filetype = "basic"
 )
@@ -154,7 +154,7 @@ runlist <- readQ(
 runlist <- lapply(runlist, "rownames<-", inds$V1)
 
 # Define function "plot_run" to plot all ks for each run
-plot_run <- function(run_id, runlist, tot_k, outprefix) {
+plot_run <- function(run_id, runlist, TOT_K, OUTPREFIX) {
 
   # Extract all the files of the current run
   idx <- grep(paste0("_run", run_id, "_I\\."), rownames(summary(runlist)))
@@ -169,7 +169,7 @@ plot_run <- function(run_id, runlist, tot_k, outprefix) {
     clustercol = clist,
 
     # Two-line strip panel label
-    splab = paste0("run", run_id, "\nK = ", 2 : tot_k),
+    splab = paste0("run", run_id, "\nK = ", 2 : TOT_K),
 
     # Individual labels
     showindlab = TRUE, useindlab = TRUE,
@@ -180,21 +180,21 @@ plot_run <- function(run_id, runlist, tot_k, outprefix) {
     showlegend = TRUE,
     legendkeysize = 8,
     legendtextsize = 10,
-    legendlab = paste0("group ", 1 : tot_k),
+    legendlab = paste0("group ", 1 : TOT_K),
 
     # Export
-    outputfilename = paste0(outprefix, "_allKs_run", run_id),
+    outputfilename = paste0(OUTPREFIX, "_allKs_run", run_id),
     imgtype = "pdf",
     height = 5, width = 30,
     exportpath = getwd()
   )
 }
 
-plot_each_run <- lapply(0 : (tot_run-1), 
+plot_each_run <- lapply(0 : (TOT_RUN-1), 
                    plot_run,
                    runlist = runlist,
-                   tot_k = tot_k,
-                   outprefix = outprefix)
+                   tot_k = TOT_K,
+                   outprefix = OUTPREFIX)
 
 #######
 # 2.3 # Barplot by K for all runs
@@ -209,7 +209,7 @@ allkruns <- plotQ(alignK(runlist),
         clustercol = clist,
 
         # Two-line strip panel label
-        splab = paste0("K = ", rep(c(2 : tot_k), each = tot_run), "\nrun", seq(1, tot_run)),
+        splab = paste0("K = ", rep(c(2 : TOT_K), each = TOT_RUN), "\nrun", seq(1, TOT_RUN)),
 
         # Individual labels
         showindlab = TRUE, useindlab = TRUE, 
@@ -220,10 +220,10 @@ allkruns <- plotQ(alignK(runlist),
         showlegend = TRUE, 
         legendkeysize = 8, 
         legendtextsize = 10,
-        legendlab = paste0("group ", 1 : tot_k),
+        legendlab = paste0("group ", 1 : TOT_K),
 
         # Export file
-        outputfilename = paste0(outprefix, "_allKs_allruns"),
+        outputfilename = paste0(OUTPREFIX, "_allKs_allruns"),
         imgtype = "pdf", 
         height = 5, 
         width = 30, 
