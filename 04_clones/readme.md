@@ -51,13 +51,13 @@ Run the scripts sequentially. The SNPDuo analysis is designed for SLURM submissi
 
 ```bash
 # 1. IBS Clustering and Dendogram Generation (R)
-Rscript 01_ibs_clustering.R
+Rscript 01_detect_clones.R
 
 # 2. Pairwise IBS Calculations (SLURM)
-sbatch 02_snpduo_analysis.sh
+sbatch 02_run_SNPDuo.sh
 
 # 3. Visualization of IBS2* Plot (R)
-Rscript 03_plot_ibs2het.R
+Rscript 03_plot_IBS_stats.R
 ```
 
 ## 📉 Workflow Details
@@ -78,13 +78,13 @@ Preprocessing: Uses vcftools to convert VCF data into .tped and .tfam formats.
 
 File Cleaning: Uses sed and awk to format chromosome names to strictly numeric values required by SNPDuo.
 
-IBS Metrics: Runs snpduo to generate .count and .summary files, including IBS0, IBS1, and IBS2* counts.
+IBS Metrics: Runs snpduo to generate .count and .summary output files.
 
 ### 3. Visualization (03_plot_IBS_stats.R)
 Generates high-quality QC plots to visually distinguish clones from unrelated pairs.
 
-IBS2* Ratio: Plots the "Fraction of Informative SNPs" against the "IBS2* ratio."
+IBS2* Ratio: Plots the "Fraction of Informative SNPs" against the "IBS2* ratio".
 
-Clone Highlighting: Automatically identifies and highlights potential clones (red) vs. unknown pairs (blue) based on a threshold of 0.95.
+Clone Highlighting: Highlights clones (red) vs. unknown pairs (grey) based on a IBS threshold of 0.95.
 
-Reference Lines: Includes a dashed intercept at 0.70 to assist in classifying different degrees of relatedness.
+Cutoff: The IBS2* ratio value of 0.70 separates different degrees of relatedness.
