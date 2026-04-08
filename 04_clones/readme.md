@@ -20,8 +20,8 @@ These scripts require an **R** environment for statistical analysis and an HPC e
 
 ### 1. Genotype Data
 The pipeline accepts data in two formats depending on the script:
-* **PLINK Binary Files**: `.bed`, `.fam`, and `.bim` files for clustering analysis.
-* **VCF Files**: `.vcf` or `.vcf.gz` for the SNPDuo pairwise analysis.
+* **PLINK Binary Files**: `.bed`, `.fam`, and `.bim` files obtained by converting the filtered vcf file obtained in step 3 for IBS and clustering analysis using SNPRelate.
+* **VCF Files**: filtered `.vcf` or `.vcf.gz` file obtained in step 3 for SNPDuo analysis.
 
 ### 2. Sample Annotation
 A plain text file used to map original sample names to prettier labels for plotting.
