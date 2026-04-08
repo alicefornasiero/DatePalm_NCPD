@@ -24,14 +24,12 @@ NUM_THREADS = 2
 # ---------------------------------------------- #
 
 # Install required packages
-# install.packages(c("tidyverse", "gdsfmt", "SNPRelate", "ggplot2", "RColorBrewer")
+# install.packages(c("gdsfmt", "SNPRelate", "ggplot2")
 
 # Load libraries
-library(tidyverse)
 library(gdsfmt)
 library(SNPRelate)
 library(ggplot2)
-library(RColorBrewer)
 
 # Move to working directory
 setwd(INDIR)
