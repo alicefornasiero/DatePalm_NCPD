@@ -1,4 +1,4 @@
-# NCPD *P. dactylifera* collection
+# *P. dactylifera* collection at NCPD
 
 This repository contains a set of BASH and R scripts to replicate the analyses and generate the figures in:
 #### Fornasiero, A., Celii M., Elbasyoni I. S., Hong J., Michaux G., Blilou I., Wing R. A., Poland J. Genetic characterization of a *P. dactylifera* collection at the National Center for Palms and Dates, Saudi Arabia ####
@@ -14,13 +14,13 @@ To characterize and curate this collection we addressed the following questions:
 
 As palms have traditionally been moved and cultivated in different regions round the country, there is a general lack of information on the geographic origin of the varieties. Thus, an additional goal is to identify unique genetic profiles to clarify ambiguities in cultivar names and build parentage atlas of NCPD date palms.
 
-## Usage
+## Repository content
 
 This repository includes:
 
 1. The Variant Calling Workflow, consisting of BASH scripts for the [trimming](https://github.com/alicefornasiero/DatePalm_KSA_PopGen/blob/main/01_trim/) of raw Illumina paired-end reads, [alignment and filtering](https://github.com/alicefornasiero/DatePalm_KSA_PopGen/blob/main/02_align) of trimmed reads to the reference genome, joint genotyping through [SNP calling and filtering](https://github.com/alicefornasiero/DatePalm_KSA_PopGen/blob/main/03_snp_call).
 
-2. The Analysis Workflow, consisting of BASH and R scripts for [clone](https://github.com/alicefornasiero/DatePalm_KSA_PopGen/tree/main/04_clones) detection, [population structure](https://github.com/alicefornasiero/DatePalm_KSA_PopGen/tree/main/05_structure) analysis, [heterozygosity](https://github.com/alicefornasiero/DatePalm_KSA_PopGen/tree/main/06_pop_stats) estimation, [phylogenetic analysis](https://github.com/alicefornasiero/DatePalm_KSA_PopGen/tree/main/07_phylogeny) using Neighbor-Joining clustering to measure genetic distance between NCPD date palms and publicly available *P. dactylifera* varieties.
+2. The Population Genetics Analysis Workflow, consisting of BASH and R scripts for [clone](https://github.com/alicefornasiero/DatePalm_KSA_PopGen/tree/main/04_clones) detection, [population structure](https://github.com/alicefornasiero/DatePalm_KSA_PopGen/tree/main/05_structure) analysis, [heterozygosity](https://github.com/alicefornasiero/DatePalm_KSA_PopGen/tree/main/06_pop_stats) estimation, [phylogenetic analysis](https://github.com/alicefornasiero/DatePalm_KSA_PopGen/tree/main/07_phylogeny) using Neighbor-Joining clustering to measure genetic distance between NCPD date palms and publicly available *P. dactylifera* varieties.
 
 3. The README files with detailed description of each step:
    - [01_trim](https://github.com/alicefornasiero/DatePalm_KSA_PopGen/blob/main/01_trim/readme.md)
@@ -54,7 +54,7 @@ For more details or to request materials, please contact the corresponding autho
 
 - **Jesse Poland**: jesse.poland@kaust.edu.sa  
 
-## Citations
+## Citation
 
 If you use the BASH scripts, R code or SRA data, please cite:
 
