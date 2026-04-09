@@ -3,8 +3,6 @@
 This repository contains a set of BASH and R scripts to replicate the analyses and generate the figures in:
 #### Fornasiero, A., Celii M., Elbasyoni I. S., Hong J., Michaux G., Blilou I., Wing R. A., Poland J. Genetic characterization of a *P. dactylifera* collection at the National Center for Palms and Dates, Saudi Arabia ####
 
-<img width="757" height="885" alt="image" src="https://github.com/user-attachments/assets/84ef38f7-ad44-4a28-b96d-504c7daed909" />
-
 ## Overview
 The workflow processes high-depth whole-genome sequencing of a date palm collection from the National Center for Palms and Dates (NCPD) in Al-Ahsa, Saudi Arabia (https://ncpd.gov.sa). This resource comprises 123 female varieties and 131 male accessions, and represents the genetic diversity of *P. dactylifera* in Saudi Arabia.
 
