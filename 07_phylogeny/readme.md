@@ -1,12 +1,12 @@
 ## Genetic Distance & Phylogeny Pipeline
 
-*04_phylogeny* contains a SLURM-based Bash script for calculating pairwise genetic distances from VCF files and constructing Neighbor-Joining (NJ) trees with bootstrap support.
+*07_phylogeny* contains a SLURM-based Bash script for calculating pairwise genetic distance from a VCF file and constructing a consensus Neighbor-Joining (NJ) tree with bootstrap support.
 
 ---
 
 ## 🛠 Prerequisites
 
-These scripts are designed to run on an HPC environment using **SLURM** workload manager. **Conda** environment installation for EMBOSS and Embassy are required. Ensure the following modules/tools are available:
+These scripts are designed to run on an HPC environment using **SLURM** workload manager. Ensure the following modules/tools are available (EMBOSS and Embassy toolsuites are installed using **Conda**):
 
 | Tool | Version | Documentation |
 | :--- | :--- | :--- |
@@ -21,13 +21,10 @@ These scripts are designed to run on an HPC environment using **SLURM** workload
 ## 📂 Input Requirements
 
 ### 1. Multi-Sample VCF
-A multi-sample **VCF** file containing the variants for distance calculation.
+A filtered **VCF** file obtained via joint genotyping and SNP filtering of the NCPD collection and publicly available *Phoenix* samples (Bioproject: PRJNA495685, PRJNA427409, PRJNA308824, PRJNA495685 - see manuscript for the full list of samples). This file is used for pairwise genetic distance calculation.
 
 ### 2. Run List (`RUNLIST`)
-A plain text file containing a numeric sequence (one number per line). This determines the number of bootstrap replicates (e.g., 1 to 100).
-
-### 3. Sampling Fraction (`RAND`)
-A value between 0 and 1 representing the fraction of sites to be randomly sampled with replacement for each bootstrap run.
+A text file containing a numeric sequence (one number per line) for parallel execution of bootstrap replicates as a job array.
 
 ---
 
@@ -40,7 +37,7 @@ In the script, update the following variables in the **Required Parameters** sec
 * `OUTDIR`: Directory where output matrices and trees will be saved.
 * `VCF2DIS`: Path to the `VCF2Dis` executable.
 * `RUNLIST`: Path to your list of bootstrap run IDs.
-* `RAND`: The fraction of sites to sample (e.g., `0.1` for 10%).
+* `RAND`: The fraction of sites to be randomly sampled for each bootstrap run (e.g., `0.1` for 10%).
 
 ### 2. Execution
 Run the script as a SLURM job array. The array index must correspond to the number of lines in your `RUNLIST`.
