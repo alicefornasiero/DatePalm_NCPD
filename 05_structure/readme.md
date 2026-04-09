@@ -1,6 +1,6 @@
 ## Population Structure Analysis (PCA & sNMF)
 
-*06_structure* contains a suite of SLURM-based Bash and R scripts for investigating genetic population structure through Principal Component Analysis (PCA) and Sparse Non-negative Matrix Factorization (sNMF).
+*05_structure* contains a suite of SLURM-based Bash and R scripts for investigating genetic population structure through Principal Component Analysis (PCA) and Sparse Non-negative Matrix Factorization (sNMF).
 
 ---
 
