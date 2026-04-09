@@ -6,7 +6,7 @@
 
 ## 🛠 Prerequisites
 
-These scripts are designed to run on an HPC environment using **SLURM** workload manager. **Conda** environment installation for sNMF is required. Ensure the following modules/tools are available:
+These scripts are designed to run on an HPC environment using **SLURM** workload manager. Ensure the following modules/tools are available (sNMF is installed via **Conda** environment):
 
 | Tool | Version | Documentation |
 | :--- | :--- | :--- |
@@ -26,10 +26,10 @@ A tab-separated file used for coloring PCA plots.
 * Columns: `sample`, `population` (header required).
 
 ### 3. Run Configuration (`RUNFILE`)
-For sNMF job arrays, a text file containing a numeric sequence of run IDs (one per line).
+A text file containing a numeric sequence of run IDs (one per line), for parallele execution of sNMF runs as a job array.
 
 ### 4. Sample Labels (`LABEL_FILE`)
-A text file containing sample names in the same order as in the VCF, used for admixture barplots.
+A text file containing sample names in the same order as in the VCF file, used to generate admixture barplots.
 
 ---
 
@@ -67,14 +67,13 @@ Rscript 05_plot_structure.R
 ### 2. sNMF Population Structure (03_run_sNMF.sh)
 
 - *recode A-transpose*: Converts the vcf file to a .geno format required by sNMF;
-- *createDataSet*: Masks 5% of genotypes for cross-entropy evaluation at each run;
-- *sNMF*: Estimates ancestry coefficients for a range of $K$ (ancestral populations) across multiple independent runs;
-- *crossEntropy*: Calculates cross-entropy criterion to evaluate the quality of ancestry estimation. This criterion will help to choose the number of ancestral populations (K) or the best run
-among a set of runs. A smaller value of the cross-entropy criterion means a better run. The value useful to compare runs is the cross-entropy for the **masked data**.
+- *createDataSet*: Masks 5% (default) of genotypes for cross-entropy evaluation at each run;
+- *sNMF*: Estimates ancestry coefficients for a range of $K$s (ancestral populations) across multiple independent runs;
+- *crossEntropy*: Calculates cross-entropy criterion to evaluate the quality of ancestry estimation. This criterion will help to choose the number of ancestral populations (K) or the best run among a set of runs. A smaller value of the cross-entropy criterion means a better run. The value useful to compare runs is the cross-entropy for the **masked data**.
 
 ### 3. Selection & Visualization (04_sNMF_postprocessing.sh & 05_plot_structure.R)
-- Cross-entropy evaluation: Parses log files to identify the run and $K$ value with the lowest cross-entropy.
-- Cross-Entropy Plot: Visualizes the decay of cross-entropy to determine the optimal $K$.
+- Cross-entropy evaluation: Parses log files to identify the run and $K$ value with the lowest cross-entropy;
+- Cross-Entropy Plot: Visualizes the decay of cross-entropy to determine the optimal $K$;
 - Admixture Barplots: Uses *pophelper* to generate barplots with ancestry proportions calculated with sNMF:
     - By K: Compares runs for a specific $K$ value;
     - By Run: Shows transition of structure from $K=2$ to $K_{max}$ for a single run;
