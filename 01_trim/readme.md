@@ -39,13 +39,10 @@ SampleC
 
 ### 1. Configuration
 Before launching, you must edit the Required Parameters section inside each .sh script:
-```text
-FASTQ_FOLDER: Path to your raw input data.
 
-PROJECT_FOLDER: Path where results and subdirectories will be created.
-
-SAMPLE_LIST: Path to your `samples.txt` file.
-```
+- `FASTQ_FOLDER`: Path to your raw input data.
+- `PROJECT_FOLDER`: Path where results and subdirectories will be created.
+- `SAMPLE_LIST`: Path to your `samples.txt` file.
 
 ### 2. Execution
 The scripts use SLURM Job Arrays to process samples in parallel. Launch them sequentially using sbatch.
