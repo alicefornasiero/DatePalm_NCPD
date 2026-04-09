@@ -35,7 +35,40 @@ A text file containing sample names in the same order as in the VCF file, used t
 
 ## 🚀 Usage Instructions
 
-### 1. Principal Component Analysis (PCA)
+### 1. Configuration
+Update the following variables in the **Required Parameters** section of the scripts:
+
+**Bash Script (`01_Run_PCA.sh`):**
+* `PROJECT_FOLDER`: Path to directory containing input gVCF files.
+* `VCF`: vcf input file. It can be gzipped.
+
+**R Script (`02_Plot_PCA.R`):**
+* `INDIR`: Path to the input directory containing the eigenvalues and eigenvectors obtained with Plink.
+* `INPREFIX`: Prefix name of the .eigenval and .eigenvec input files from Plink.
+* `GROUP_FILE`: Tab separated file with two columns: sample name, population (header required).
+* `MAX_OVERLAPS`: Numeric value. Exclude text labels when they overlap more than max_overlap text labels or data points. No label printed: 0.
+
+**Bash Script (`03_Run_sNMF.sh`):**
+* `VCF`: vcf input file. It can be gzipped.
+* `PROJECT_FOLDER`: Path to the project folder.
+* `RUNFILE`: Text file containing a numeric sequence (one number per line) corresponding to the runs.
+* `NUMK`: Maximum number of Ks.
+* `OUTPUT_PREFIX`: Prefix for the output files.
+
+**Bash Script (`04_sNMF_popstprocessing.sh`):**
+* `PROJECT_FOLDER`: Path to directory containing input gVCF files.
+
+**R Script (`05_plot_structure.R`):**
+* `INDIR`: Path to the input directory containing the Q matrices obtained with sNMF analysis.
+* `OUTPREFIX`: Prefix name of the output files.
+* `LABEL_FILE`: File containing the sample names used in sNMF (one per line), in the same order.
+* `TOT_RUN`: The total number of runs to be plotted.
+* `TOT_K`: The total number of Ks to be plotted.
+
+### 2. Execution
+Submit the Bash script to the SLURM scheduler:
+
+#### 1. Principal Component Analysis (PCA)
 ```bash
 # 1. Compute PCA with Plink
 sbatch 01_run_PCA.sh
@@ -44,7 +77,7 @@ sbatch 01_run_PCA.sh
 Rscript 02_plot_PCA.R
 ```
 
-### 2. Ancestry Estimation (sNMF)
+#### 2. Ancestry Estimation (sNMF)
 ```bash
 # 1. Run sNMF iterations (Array index per run)
 sbatch --array=0-9 03_run_sNMF.sh
