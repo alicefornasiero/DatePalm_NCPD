@@ -6,15 +6,15 @@
 
 # Input files and variables
 # ----------------------------------------------------------------------------------------------------- #
-# indir - Path to directory containing the per-sample heterozygosity_sorted.tsv file from clam analysis
-# groupfile - Tab separated file with two columns: sample name, population (header required)
-# plot_title - Title text for the output plot
-# win_size - Window size in bp used in clam analysis
+# INDIR - Path to directory containing the per-sample heterozygosity_sorted.tsv file from clam analysis
+# POP_FILE - Tab separated file with two columns: sample name, population (header required)
+# PLOT_TITLE - Title text for the output plot
+# WIN_SIZE - Window size in bp used in clam analysis
 
-indir = "path/to/clam/per_sample/output/directory"
-groupfile = "/path/to/text_file"
-plot_title = "Plot title"
-win_size = 100000
+INDIR = "path/to/clam/per_sample/output/directory"
+POP_FILE = "/path/to/text_file"
+PLOT_TITLE = "Plot title"
+WIN_SIZE = 100000
 # ---------------------------------------------------------------------------------------------------- #
 
 # Install required packages
@@ -26,15 +26,15 @@ library(ggplot2)
 library(forcats)
 
 # Set working directory
-setwd(indir)
+setwd(INDIR)
 
 # Read input files
 het <- read_table("heterozygosity_sorted.tsv", col_names = c("chrom","start","end","sample","het_total","callable_total","heterozygosity"))
-pop <- read_table(groupfile, col_names = TRUE)
+pop <- read_table(POP_FILE, col_names = TRUE)
 colnames(pops) <- c("sample", "pops")
 
 # Define output file names
-het_out_box <- paste0(indir, "/", sub(".tsv", "_boxplot.pdf", "heterozygosity_sorted.tsv"))
+het_out_box <- paste0(INDIR, "/", sub(".tsv", "_boxplot.pdf", "heterozygosity_sorted.tsv"))
 
 # Remove lines with NA values
 het_clean <- het[complete.cases(het), ]
@@ -70,7 +70,7 @@ plot_het_box <- ggplot(het_pop_sorted, aes(x = final_label, y = heterozygosity, 
                                max(het_pop_sorted$heterozygosity, na.rm = TRUE), 0.002),3)
           ) +
           scale_fill_manual(values = clist) +
-          labs(title = plot_title, x = "", y = "Heterozygosity") +
+          labs(title = PLOT_TITLE, x = "", y = paste0("Heterozygosity in ", WIN_SIZE/1000, " kb windows")) +
           theme_minimal() +
           theme(axis.text = element_text(size = 8),
             axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
