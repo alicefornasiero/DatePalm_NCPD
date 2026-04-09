@@ -36,15 +36,15 @@ Sample_002   Variety_B
 ## 🚀 Usage Instructions
 
 ### 1. Configuration
-In each script, update the following variables in the Input files and variables section:
+In each script, update the required variables in the input file and variable section:
 
-INDIR / INFILE: Path to input directory and/or input VCF file.
+`INDIR` / `INFILE`: Path to input directory and/or input VCF file.
 
-SAMPLE_ANNOT: Text file with sample labels in the original order.
+`SAMPLE_ANNOT`: Text file with sample labels in the original order.
 
-OUTDIR: Path to save results and plots.
+`OUTDIR`: Path to save results and plots.
 
-SNPDUOPATH: Path to the directory where the snpduo executable is located.
+`SNPDUOPATH`: Path to the directory where the snpduo executable is located.
 
 ### 2. Execution
 Run the scripts sequentially. The SNPDuo analysis is designed for SLURM submission.
