@@ -1,6 +1,6 @@
 ## Genetic Distance & Phylogeny Pipeline
 
-*07_phylogeny* contains a SLURM-based Bash script for calculating pairwise genetic distance from a VCF file and constructing a consensus Neighbor-Joining (NJ) tree with bootstrap support.
+*07_phylogeny* contains a SLURM-based Bash script for calculating pairwise genetic distance from a VCF file and constructing a consensus Neighbor-Joining (NJ) tree with bootstrap support, and R script for visualization.
 
 ---
 
@@ -33,11 +33,17 @@ A text file containing a numeric sequence (one number per line) for parallel exe
 ### 1. Configuration
 In the script, update the following variables in the **Required Parameters** section:
 
+**Bash Script (`01_build_NJ_tree.sh`):**
 * `VCF`: Path to your input multi-sample VCF.
 * `OUTDIR`: Directory where output matrices and trees will be saved.
 * `VCF2DIS`: Path to the `VCF2Dis` executable.
 * `RUNLIST`: Path to your list of bootstrap run IDs.
-* `RAND`: The fraction of sites to be randomly sampled for each bootstrap run (e.g., `0.1` for 10%).
+* `RAND`: The fraction of sites to be randomly sampled for each bootstrap run (e.g., `0.2` for 20%).
+
+**R Script (`02_visualize_tree.R`):**
+* `INDIR`: Path to the directory containing the Newick tree.
+* `TREE_FILE`: Name of the consensus tree file.
+* `GROUP_FILE`: Path to your metadata/group information file.
 
 ### 2. Execution
 Run the script as a SLURM job array. The array index must correspond to the number of lines in your `RUNLIST`.
@@ -47,21 +53,21 @@ Run the script as a SLURM job array. The array index must correspond to the numb
 sbatch --array=0-99 01_build_NJ_tree.sh
 ```
 
+Then run the R script for visualization.
+
+```bash
+Rscript 02_plot_NJ_tree.R
+```
+
 ## 📉 Workflow Details
 
-### 1. Distance Calculation (VCF2Dis)
+### 1. Distance & Tree Construction (Bash/SLURM)
 
-- For each job in the array, the VCF2Dis calculates a pairwise genetic distance matrix;
-- Sampling: Through the *-Rand* parameter, VCF2Dis performs random sampling, enabling bootstrap analysis across multiple runs;
-- Matrices: Outputs a .mat distance matrix for each replicate run.
+- VCF2Dis: Performs random sampling (-Rand) to generate a pairwise distance matrix (.mat) for each bootstrap replicate.
+- *fneighbor*: Constructs individual Neighbor-Joining (NJ) trees from the matrices using randomly generated seeds.
+- *fconsense*: Concatenates all replicate trees and determines the Majority Rule Extended (MRE) consensus tree with bootstrap support values. The resulting consensus tree includes bootstrap values representing the frequency of specific clades appearing across the replicates.
 
-### 2. Tree Construction (fneighbor)
+### 2. Tree Processing & Rooting (R)
 
-- *fneighbor*: Builds individual Neighbor-Joining (NJ) trees from the distance matrices;
-- Randomization: Uses an automatically generated odd seed to ensure stochasticity across runs.
-
-### 3. Consensus & Bootstrapping (fconsense)
-
-- Individual trees are concatenated;
-- *fconsense*: Combines all individual .treefile outputs into a single file and determines the Majority Rule Extended (MRE) consensus tree;
-- Support Values: The resulting consensus tree includes bootstrap values representing the frequency of specific clades appearing across the replicates.
+- The tree is rooted using *P. canariensis* as the outgroup.
+- Information of species, sample type (female/male) and geographic origin is added to the tree for visualization.
