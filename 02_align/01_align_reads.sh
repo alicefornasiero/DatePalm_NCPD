@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --nodes=1
-#SBATCH --cpus-per-task=32
+#SBATCH --cpus-per-task=8
 #SBATCH --partition=batch
 #SBATCH --job-name align
 #SBATCH -o align.%J.out
@@ -19,7 +19,7 @@
 PROJECT_FOLDER="ENTER_OUTPUT_DIRECTORY_PATH"
 SAMPLE_LIST="ENTER_FILE_NAME_AND_PATH"
 REFERENCE="ENTER_REFERENCE_PATH_AND_FILE_NAME"
-MEM_THREADS=32
+MEM_THREADS=8
 # ----------------------------------------------------------------------- #
 
 # Create output directory and sub-directories
