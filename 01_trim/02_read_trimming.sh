@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --nodes=1
-#SBATCH --cpus-per-task=32
+#SBATCH --cpus-per-task=8
 #SBATCH --partition=batch
 #SBATCH --job-name trim
 #SBATCH -o trim.%J.out
@@ -17,7 +17,7 @@
 
 PROJECT_FOLDER="ENTER_OUTPUT_DIRECTORY_PATH"
 SAMPLE_LIST="ENTER_FILE_NAME_AND_PATH"
-n_threads=32
+n_threads=8
 # ----------------------------------------------------------------------- #
 
 # Change directory to trimming directory
