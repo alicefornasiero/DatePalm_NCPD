@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --nodes=1
-#SBATCH --cpus-per-task=32
+#SBATCH --cpus-per-task=8
 #SBATCH --partition=batch
 #SBATCH --job-name cutadap
 #SBATCH -o cutadap.%J.out
@@ -23,7 +23,7 @@ SAMPLE_LIST="ENTER_FILE_NAME_AND_PATH"
 # Set variables for Illumina Truseq adapter sequence masking
 adapter1=AGATCGGAAGAGCACACGTCTGAACTCCAGTCA
 adapter2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
-n_cores=32
+n_cores=8
 # ----------------------------------------------------------------------- #
 
 # Create output directory and subdirectories
