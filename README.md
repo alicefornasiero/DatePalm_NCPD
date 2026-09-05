@@ -1,7 +1,7 @@
 # *P. dactylifera* collection at NCPD
 
 This repository contains a set of BASH and R scripts to replicate the analyses and generate the figures in:
-#### Fornasiero A., Celii M., Elbasyoni I. S., Hong J., Michaux G., Mohammed N., Toor U., Blilou I., Wing R. A., Poland J. Genetic characterization of a *P. dactylifera* collection at the National Center for Palms and Dates, Saudi Arabia ####
+#### Fornasiero A., Celii M., Elbasyoni I. S., Hong J., Michaux G., Mohammed N., Toor U.,  Alkhateeb A.A., Abdulaziz Bushulaybi F., Blilou I., Wing R. A., Poland J. Genomic characterization of a *Phoenix dactylifera* collection at the National Center for Palms and Dates, Saudi Arabia ####
 
 ## Overview
 The workflow processes high-depth whole-genome sequencing of a date palm collection from the National Center for Palms and Dates (NCPD) in Al-Ahsa, Saudi Arabia (https://ncpd.gov.sa). This resource comprises 123 female varieties and 131 male accessions, and represents the genetic diversity of *P. dactylifera* in Saudi Arabia.
@@ -40,13 +40,13 @@ This repository includes:
   
 ## References
 
-1. Celii M, Al-Bader N, Mohammed N,  Zhou Y, Fornasiero A, Navarrete Rodriguez M, Shuwaikan R, Toor U, Hong J, Llaca V, Fengler K, Koo D-H, Gros-Balthazard M, Battesti V, Capote T, Purugganan M, Malek JA, Blilou I, Poland J, Wing RA (2025). Foundational genomic resources for date palm: A gap-free, telomere-to-telomere phased assembly of Ajwa and 19 high-quality genome assemblies of *Phoenix dactylifera*. [*bioRxiv* 2025.12.30.696066](https://doi.org/10.64898/2025.12.30.696066)
+1. Celii M, Al-Bader N, Mohammed N et al. Foundational genomic resources for date palm (*Phoenix dactylifera*): A gap-free, telomere-to-telomere phased assembly of Ajwa and 19 high-quality genome assemblies. *Sci Data* (2026). doi: [https://doi.org/10.1038/s41597-026-08193-0]
 
-2. Flowers JM, Hazzouri KM, Gros-Balthazard M, Mo Z, Koutroumpa K, Perrakis A, Ferrand S, Khierallah HSM, Fuller DQ, Aberlenc F, Fournaraki C, Purugganan MD. Cross-species hybridization and the origin of North African date palms (2019). *Proc Natl Acad Sci U S A*, 116(5):1651-1658. doi: [10.1073/pnas.1817453116](https://pubmed.ncbi.nlm.nih.gov/30642962/) 
+4. Flowers JM, Hazzouri KM, Gros-Balthazard M, Mo Z, Koutroumpa K, Perrakis A, Ferrand S, Khierallah HSM, Fuller DQ, Aberlenc F, Fournaraki C, Purugganan MD. Cross-species hybridization and the origin of North African date palms (2019). *Proc Natl Acad Sci U S A*, 116(5):1651-1658. doi: [10.1073/pnas.1817453116](https://pubmed.ncbi.nlm.nih.gov/30642962/) 
 
-3. Hazzouri KM, Flowers JM, Visser HJ, Khierallah HSM, Rosas U, Pham GM, Meyer RS, Johansen CK, Fresquez ZA, Masmoudi K, Haider N, El Kadri N, Idaghdour Y, Malek JA, Thirkhill D, Markhand GS, Krueger RR, Zaid A, Purugganan MD (2015). Whole genome re-sequencing of date palms yields insights into diversification of a fruit tree crop. *Nat Commun.*, 6:8824. doi: [10.1038/ncomms9824](https://pubmed.ncbi.nlm.nih.gov/26549859/)
+5. Hazzouri KM, Flowers JM, Visser HJ, Khierallah HSM, Rosas U, Pham GM, Meyer RS, Johansen CK, Fresquez ZA, Masmoudi K, Haider N, El Kadri N, Idaghdour Y, Malek JA, Thirkhill D, Markhand GS, Krueger RR, Zaid A, Purugganan MD (2015). Whole genome re-sequencing of date palms yields insights into diversification of a fruit tree crop. *Nat Commun.*, 6:8824. doi: [10.1038/ncomms9824](https://pubmed.ncbi.nlm.nih.gov/26549859/)
 
-4. Torres MF, Mathew LS, Ahmed I, Al-Azwani IK, Krueger R, Rivera-Nuñez D, Mohamoud YA, Clark AG, Suhre K, Malek JA. Genus-wide sequencing supports a two-locus model for sex-determination in *Phoenix* (2018). *Nat Commun.*, 9(1):3969. doi: [10.1038/s41467-018-06375-y](https://pubmed.ncbi.nlm.nih.gov/30266991/). Erratum in: *Nat Commun.*, 9(1):5219. doi: [10.1038/s41467-018-07742-5](https://pubmed.ncbi.nlm.nih.gov/30510154/)
+6. Torres MF, Mathew LS, Ahmed I, Al-Azwani IK, Krueger R, Rivera-Nuñez D, Mohamoud YA, Clark AG, Suhre K, Malek JA. Genus-wide sequencing supports a two-locus model for sex-determination in *Phoenix* (2018). *Nat Commun.*, 9(1):3969. doi: [10.1038/s41467-018-06375-y](https://pubmed.ncbi.nlm.nih.gov/30266991/). Erratum in: *Nat Commun.*, 9(1):5219. doi: [10.1038/s41467-018-07742-5](https://pubmed.ncbi.nlm.nih.gov/30510154/)
 
 ## Contacts
 
@@ -59,7 +59,7 @@ For more details or to request materials, please contact the corresponding autho
 If you use the BASH scripts, R code or SRA data, please cite:
 
 ```text
-Fornasiero A., Celii M., Elbasyoni I. S., Hong J., Michaux G., Mohammed N., Toor U., Blilou I., Wing R. A., Poland J.
-Genetic characterization of a P. dactylifera collection at the National Center for Palms and Dates, Saudi Arabia
+Fornasiero A., Celii M., Elbasyoni I. S., Hong J., Michaux G., Mohammed N., Toor U., Alkhateeb A.A., Abdulaziz Bushulaybi F., Blilou I., Wing R. A., Poland J.
+Genomic characterization of a Phoenix dactylifera collection at the National Center for Palms and Dates, Saudi Arabia
 ```
 Additional files and figures related to the publication are deposited in Zenodo: [link](https://zenodo.org/uploads/19182061).
